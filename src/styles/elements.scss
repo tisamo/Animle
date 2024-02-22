@@ -1,0 +1,36 @@
+@import "variables";
+button{
+  background-color: unset;
+  border: unset;
+  font-size:30px;
+  font-weight: bold;
+  cursor: pointer;
+  &:disabled{
+    opacity: 0.3;
+  }
+}
+
+
+button{
+  &.main{
+    height: 100px;
+    padding-inline: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 70px;
+    color: white;
+    transition: 0.5s;
+    @include bgImage('/purple', -150px, -460px);
+    font-size: 30px;
+    @include smaller(md){
+      height: 70px;
+      width: 250px;
+      font-size: 20px;
+    }
+
+  }
+  &:hover{
+    color: lightgrey!important;
+  }
+}

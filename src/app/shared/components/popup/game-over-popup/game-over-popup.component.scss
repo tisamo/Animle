@@ -1,0 +1,86 @@
+@import "shared";
+.back-drop{
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 1500;
+  opacity: 0.5;
+  background-color: black;
+  position: fixed;
+}
+.popup{
+  max-width: 1000px;
+  z-index: 2000;
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 30%);
+  @include smaller(md){
+    width: 80%;
+  }
+  @include smaller(sm){
+    transform: translate(-50%, 0);
+    width: 90%;
+  }
+  .game-over{
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    font-size: 60px;
+    @include bgImage('/purple1',0, -500px);
+    @include smaller(sm){
+      @include bgImage('/purple1',-200px, -500px);
+
+      font-size: 40px;
+    }
+  }
+  .content{
+    padding: 30px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 40px;
+    border-left: 5px solid black;
+    border-right: 5px solid black;
+    border-bottom: 5px solid black;
+    .text{
+      font-weight: bold;
+      font-size:40px;
+      &:first-child{
+        @include color-overlay('/purple1', -200px, -500px);
+        font-size: 60px;
+      }
+    }
+    @include smaller(sm){
+      row-gap: 20px;
+      padding: 20px;
+      .text{
+        font-size: 30px;
+        &:first-child{
+          font-size:40px;
+        }
+      }
+    }
+  }
+  .buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 30px;
+    row-gap: 30px;
+    @include smaller(sm){
+      flex-direction: column;
+      row-gap: 30px;
+    }
+    button{
+      min-width: 300px;
+
+    }
+  }
+}

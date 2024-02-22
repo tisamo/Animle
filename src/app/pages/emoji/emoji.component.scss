@@ -1,0 +1,102 @@
+@import "shared";
+
+.container{
+  padding-bottom: 100px;
+.title-row{
+  display: flex;
+  h5{
+    text-transform: lowercase!important;
+  }
+  .timer{
+    font-size:50px;
+    margin-top:5px;
+    margin-left: 320px;
+    font-weight: bold;
+    @include smaller(sm){
+      font-size: 25px;
+      float: left;
+      margin-left: unset;
+    }
+  }
+  @include smaller(sm){
+    flex-direction: column;
+  }
+  margin-bottom: 20px;
+}
+  .input-box{
+    position: relative;
+    margin-top:40px;
+    max-width: 1020px;
+    width: 100%;
+    @include smaller(sm){
+      margin-top:10px;
+    }
+    input{
+      width: 100%;
+      height: 50px;
+      font-size:35px;
+      border: solid  5px;
+      border-left-color: $neon-green;
+      border-right-color: $neon-green;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      @include smaller(sm){
+        height: 40px;
+        font-size: 20px;
+      }
+    }
+    .list{
+      position: absolute;
+      top: 50px;
+      width: 100%;
+      background-color: white;
+      border: 1px black solid;
+      z-index: 1000;
+      @include smaller(sm){
+        top: 40px;
+      }
+      .list-item{
+        cursor: pointer;
+        padding:10px;
+        border-bottom:1px solid black ;
+        @include smaller(sm){
+          font-size:14px;
+          padding: 3px;
+        }
+        &:last-child{
+          border: unset
+        }
+
+      }
+    }
+  }
+
+.title{
+  text-align: center;
+  h1{
+    margin: 0 auto;
+    font-weight: bold;
+    font-size: 60px;
+  }
+}
+
+
+}
+.game-container{
+  margin-block:200px 200px;
+  @include smaller(sm){
+   margin-top:60px;
+    margin-bottom: 0;
+  }
+  max-width: 1000px;
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+
+
+.grey{
+  background-color: lightgrey;
+}

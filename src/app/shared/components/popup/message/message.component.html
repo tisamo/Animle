@@ -1,0 +1,16 @@
+<div class="popup">
+    <div class="container">
+      <div class="message" [@border] [@opacity] *ngFor="let m of popupService.messages; let i = index" [style.top]="i * 70+'px'">
+        {{m.message}}
+      </div>
+    </div>
+</div>
+
+
+<div class="phone">
+  <div class="container">_
+    <div class="message" [@border] [@opacity] *ngFor="let m of popupService.messages; let i = index" [style.z-index]="i+10">
+      {{m.message}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+ @import "shared";
+footer{
+  height: 100px;
+  background-color: black;
+  @include smaller(md){
+    height: 50px;
+  }
+}

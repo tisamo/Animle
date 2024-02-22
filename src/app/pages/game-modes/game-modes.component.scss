@@ -1,0 +1,63 @@
+@import "shared";
+.container{
+  display: grid;
+  margin-top: 100px;
+  grid-template-columns: 1fr 1fr;
+  padding-inline: 10px 10px;
+  row-gap: 100px;
+  column-gap: 100px;
+  @include smaller(md){
+    column-gap: 50px;
+    row-gap: 50px;
+    margin-top:50px;
+    padding-bottom: 30px;
+  }
+
+  @include smaller(sm){
+    column-gap: 25px;
+    row-gap: 25px;
+    grid-template-columns: 1fr;
+    padding-bottom: 30px;
+    margin-top:50px;
+  }
+
+  .card{
+    height: 300px;
+    @include bgImage('/purple', -150px, -460px);
+    color: white;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    border: 5px solid white;
+    font-weight: bold;
+    justify-content: center;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.3s;
+    @include hoverAnimation(pulseLg, 1.5s, infinite);
+    @include smaller(md){
+      animation: unset!important;
+      height: 300px;
+      margin: 0 auto;
+      align-self: center;
+      width: 100%;
+      @include bgImage('/purple', -150px, -460px);
+
+      font-size: 40px;
+      border: 5px solid black
+    }
+    @include smaller(sm){
+      animation: unset!important;
+      height: 200px;
+      margin: 0 auto;
+      width: 100%;
+      align-self: center;
+      color: white;
+      font-size: 30px;
+      border: 5px solid black
+    }
+  }
+}
+h4{
+  text-align: center;
+}

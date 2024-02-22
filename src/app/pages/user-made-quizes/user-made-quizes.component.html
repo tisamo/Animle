@@ -1,0 +1,43 @@
+
+<div class="container">
+  <section class="filter">
+    <a routerLink="create">Top Quizes</a>
+
+    <a routerLink="create">New Quizes</a>
+
+    <a routerLink="create">My Quizes</a>
+
+    <a routerLink="create" class="green"> Create Quiz</a>
+  </section>
+  <section class="quizes">
+    <div *ngFor="let q of quizList;" class="card">
+      <div class="quiz-img"  [routerLink]="['/', 'quiz', q.id]">
+        <img [src]="q.thumbnail">
+      </div>
+      <div class="infos">
+        <div style="max-width: 240px">
+          <div class="title">
+            <a [routerLink]="['/', 'quiz', q.id]">{{q.title}}</a>
+          </div>
+          <div class="title">
+            By <span class="green">{{q.user?.name}}</span>
+          </div>
+        </div>
+          <img class="like" *ngIf="!userLikes.includes(q.id)" (click)="likeQuiz(q.id)" src="assets/img/hearth-unfilled.png">
+          <img class="like" *ngIf="userLikes.includes(q.id)" (click)="likeQuiz(q.id)" src="assets/img/hearth-filled.png">
+      </div>
+
+    <div>
+
+    </div>
+
+
+
+
+    </div>
+
+  </section>
+  <app-pager [itemCount]="itemCount" [itemsPerPage]="25" (paging)="pageChange($event)"></app-pager>
+
+</div>
+

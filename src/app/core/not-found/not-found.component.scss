@@ -1,0 +1,17 @@
+@import "shared";
+.container{
+  text-align: center;
+  flex-direction: column;
+  row-gap: 30px;
+  font-weight: 700;
+  height: calc(100% - 200px);
+  display: flex;
+  padding-top:100px;
+  .code{
+    font-size:300px;
+  }
+  .text{
+    font-size:70px;
+
+  }
+}

@@ -1,0 +1,52 @@
+@import "../../../../../styles/shared";
+.title-row{
+  display: flex;
+  align-items: center;
+  column-gap: 50px;
+  .timer{
+    font-size:50px;
+    margin-top:5px;
+    font-weight: bold;
+  }
+}
+.emoji-row{
+  display: grid;
+  width: 25%;
+  grid-template-columns: 1fr 1fr 1fr;
+  row-gap: 20px;
+  column-gap: 10px;
+
+  .emoji{
+    font-size:120px;
+    @include smaller(md){
+      font-size: 60px;
+    }
+  }
+}
+input{
+  width:100%;
+  max-width: 950px;
+  height: 50px;
+  font-size:35px;
+}
+.content {
+  width: 100%;
+  display: flex;
+  max-width: 1000px;
+  row-gap: 50px;
+  max-height: 800px;
+  flex-direction:column-reverse;
+  .divider{
+    height: inherit;
+    border: 5px solid $neon-green;
+  }
+}
+.title{
+  text-align: center;
+  h1{
+    margin: 0 auto;
+    font-weight: bold;
+    font-size: 60px;
+  }
+}
+

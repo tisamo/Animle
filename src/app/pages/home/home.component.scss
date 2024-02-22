@@ -1,0 +1,115 @@
+@import "shared";
+.green{
+  @include color-overlay('/purple',-150px, -500px );
+}
+h1{
+  @include smaller(lg){
+    font-size: 100px;
+  }
+  @include smaller(md){
+    font-size:50px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  @include smaller(sm){
+    font-size:35px;
+    text-align: center;
+    margin-top:30px;
+  }
+}
+.container{
+  padding-inline: 20px 20px;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  row-gap: 150px;
+  @include smaller(sm){
+    margin-top:30px;
+    row-gap: 50px;
+  }
+.play{
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 40px;
+  &:last-child{
+
+  }
+  @include smaller(sm){
+    &:nth-child(2){
+      flex-direction: column-reverse;
+    }
+  }
+  .game{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    border-radius: 50%;
+
+    @include smaller(sm){
+      width: 100%;
+    }
+  }
+  article{
+    width: 50%;
+    text-align: justify;
+    @include smaller(sm){
+      width: 100%;
+    }
+  }
+  h5{
+    @include smaller(md){
+      font-size: 25px;
+    }
+    @include smaller(sm){
+      font-size: 20px ;
+    }
+  }
+
+}
+}
+.versus{
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+p{
+  font-weight: bold;
+  margin-block: 5px;
+}
+button{
+  width: 400px;
+}
+.leaves{
+  position: absolute;
+  transform: rotate(30deg);
+  width: 300px;
+  top: 0;
+  right: 20px;
+  @include smaller(lg){
+    right: 10px;
+    width: 240px;
+  }
+  @include smaller(md){
+    display: none;
+  }
+}
+
+.single-leaf{
+  position: absolute;
+  transform: rotate(-55deg);
+  width: 300px;
+  bottom: 0;
+  left: 20px;
+  @include smaller(lg){
+    width: 200px;
+  }
+  @include smaller(md){
+    display: none;
+  }
+}
+

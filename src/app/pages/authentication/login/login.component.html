@@ -1,0 +1,22 @@
+<form [formGroup]="authForm" xmlns="http://www.w3.org/1999/html">
+  <h1>{{title}}</h1>
+  <div class="input-group" *ngFor="let i of inputs">
+    <label [for]="i.label">{{i.label}}</label>
+    <input [type]="i.type" [id]="i.label" [formControlName]="i.formControlName"><br>
+  </div>
+  <div class="blue-text " *ngIf="mode === 'login'" (click)="navigate(['auth', 'register'])">
+    Not registered yet?
+  </div>
+
+  <div class="blue-text " *ngIf="mode === 'login'" (click)="navigate(['auth', 'password-reset'])">
+    Forgot your password?
+  </div>
+
+  <div class="blue-text " *ngIf="mode !== 'login'" (click)="navigate(['auth', 'login'])">
+    Back to login
+  </div>
+
+  <button (click)="handleAuthActions()" class="green" [disabled]="authForm.invalid">
+    {{buttonText}}
+  </button>
+</form>

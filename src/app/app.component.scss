@@ -1,0 +1,18 @@
+@import "breakpoints";
+.content{
+  height: 100%;
+  main{
+    position: relative;
+    max-width: 1600px;
+    margin-inline: auto auto;
+    margin-block: 20px 20px;
+    height: calc(100% - 225px);
+    overflow-y: auto;
+    overflow-x:hidden;
+    @include smaller(md){
+      padding-inline: 10px 10px;
+      height: calc(100% - 155px);
+    }
+  }
+}
+

@@ -1,0 +1,50 @@
+@import "shared";
+.pages{
+  display: flex;
+  margin: 100px auto;
+  width: min-content;
+  column-gap: 20px;
+  font-size: 50px!important;
+  justify-content: center;
+  align-items: center ;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* IE/Edge */
+  user-select: none;
+  .page{
+    cursor: pointer;
+    height: 100%;
+    font-size:50px!important;
+    &--right{
+      transform: rotate(180deg);
+      height: 70px;
+    }
+  }
+  .select-page{
+    cursor: pointer;
+    position: relative;
+    margin-inline: 10px 10px;
+    display: flex;
+    padding: 5px 20px;
+    border: 5px solid black;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center ;
+    font-size: 30px;
+    width: max-content;
+    .dropdown{
+      overflow: auto;
+      height: 200px;
+      max-width: 250px;
+      width: 100%;
+      border: 3px solid black;
+      position: absolute;
+      top: 100%;
+      .item {
+        display: flex;
+        justify-content: center;
+        padding-block: 10px;
+      }
+    }
+  }
+}

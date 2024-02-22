@@ -1,0 +1,22 @@
+
+
+<div class="popup" [@random]>
+  <div class="game-over">
+    Game Over
+  </div>
+  <div class="content">
+    <div class="text" *ngIf="winText.length">You Won</div>
+    <div class="text">You scored {{result}} points!</div>
+
+    <div class="buttons">
+      <button class="main" (click)="emitAction('again')">
+        Play Again
+      </button>
+      <button class="main" (click)="emitAction('home')">
+        Exit
+      </button>
+    </div>
+  </div>
+</div>
+<div class="back-drop">
+</div>

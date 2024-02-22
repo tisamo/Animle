@@ -1,0 +1,13 @@
+<div class="content">
+  <div class="guess">
+    <div class="image-container ">
+      <div class="layer">
+        <div class="cube" *ngFor="let c of cubeColors" [style.background-color]="c"></div>
+      </div>
+      <img   [src]="imageData">
+
+    </div>
+  </div>
+
+</div>
+

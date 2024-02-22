@@ -1,0 +1,58 @@
+@import "shared";
+:host{
+  position: absolute; /* Fixed positioning */
+  right: 540px;
+  font-weight: 700;
+  font-size: 20px;
+  @include smaller(lg){
+    right:360px;
+  }
+
+  @include smaller(lg){
+    right:220px;
+  }
+
+}
+.popup{
+  position: absolute; /* Fixed positioning */
+  width: 500px; /* Width of the div */
+  @include smaller(lg){
+    width: 300px;
+  }
+  @include smaller(md){
+  display: none;
+    width: 100%;
+  }
+  display: flex;
+}
+
+
+.phone{
+  position: absolute; /* Fixed positioning */
+  width: fit-content;
+  min-width: 175px;
+  max-width: 200px;
+  display: none;
+  font-size: 16px!important;
+  @include smaller(sm){
+    display: block;
+  }
+}
+
+
+
+.container {
+  display: flex;
+  position: relative;
+  width: 100%;
+  flex-direction: column;
+  row-gap: 20px;
+
+  .message {
+    position: absolute;
+    padding: 10px;
+    width: 100%;
+    background-color: white;
+    border: 5px solid black;
+  }
+}

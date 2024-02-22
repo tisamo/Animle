@@ -1,0 +1,10 @@
+<section class="content">
+  <div class="guess">
+    <div class="image-container">
+      <span class="text" *ngFor="let s of words">
+        <div [@fadeInOut]="s.shown" [style.visibility]="s.shown ? 'visible': 'hidden'" >{{s.text}}</div>
+      </span>
+    </div>
+  </div>
+</section>
+

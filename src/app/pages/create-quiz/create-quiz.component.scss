@@ -1,0 +1,173 @@
+@import "shared";
+
+h3 {
+  text-transform: uppercase;
+  margin-top:25px;
+  margin-bottom: 100px;
+}
+
+label {
+  font-size: 25px;
+  font-weight: 800;
+  color: black;
+}
+
+.top {
+  display: flex;
+  .save{
+    margin-top:15px;
+  }
+  .title-input {
+    margin-top: 20px;
+    width: 100%;
+    height: 50px;
+    border: 2px solid black;
+    font-size: 30px;
+    padding-left: 15px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box;
+
+    .search-row {
+      display: flex;
+      margin-top: 50px;
+      column-gap: 100px;
+      align-items: center;
+      @include smaller(md) {
+        flex-direction: column-reverse;
+      }
+    }
+
+  }
+
+  .search-row {
+    display: flex;
+    margin-top: 50px;
+    column-gap: 100px;
+    align-items: center;
+    @include smaller(md) {
+      flex-direction: column-reverse;
+    }
+  }
+
+  .input-box {
+    position: relative;
+    max-width: 1020px;
+    width: 100%;
+    @include smaller(md) {
+      width: 95%;
+    }
+
+    input {
+      width: 100%;
+      height: 50px;
+      font-size: 35px;
+      border: unset;
+      border-bottom: 2px solid black;
+      -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+      -moz-box-sizing: border-box; /* Firefox, other Gecko */
+      box-sizing: border-box;
+    }
+
+    .list {
+      position: absolute;
+      top: 50px;
+      width: 100%;
+      margin-bottom: 50px;
+      border: 1px solid black;
+      background-color: white;
+      z-index: 10;
+
+      .list-item {
+        cursor: pointer;
+        padding: 10px;
+        border-bottom: 1px solid black;
+        &:last-child {
+          border: unset
+        }
+      }
+    }
+  }
+}
+
+
+
+.quiz {
+  margin-top: 100px;
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1020px;
+  row-gap: 20px;
+
+  &-item {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 20px;
+    border-bottom: 3px solid black;
+    width: 100%;
+    @include smaller(md) {
+      width: 95%;
+    }
+
+    &:last-child {
+      border-bottom: unset;
+    }
+
+    .anime {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      align-items: center;
+      column-gap: 20px;
+      width: 100%;
+      font-size: 25px;
+      font-weight: 600;
+      .title{
+        font-size:25px;
+      }
+      button {
+        font-weight: 800;
+        font-size: 25px;
+      }
+      img {
+        width: 80px;
+      }
+
+      @include smaller(md) {
+        font-size: 20px;
+      }
+
+      .image-container {
+        position: relative;
+
+        .text {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+}
+
+.grey {
+  background-color: lightgrey;
+}
+
+
+
+.infos {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  .image{
+    width: 400px;
+    img{
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+}

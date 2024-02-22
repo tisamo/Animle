@@ -1,0 +1,32 @@
+@import "variables";
+@import "breakpoints";
+
+.dashed{
+  border-bottom: 5px dashed $neon-green;
+  border-top: 5px dashed black;
+  border-left: 5px dashed $neon-green;
+  border-right: 5px dashed black;
+  outline: unset;
+  &::placeholder{
+    color: slategrey;
+    @include smaller(sm){
+      font-size:20px;
+    }
+  }
+}
+.dashed-black{
+border: black 5px dashed;
+}
+
+input{
+  padding-left:10px;
+}
+
+input{
+  &::placeholder {
+    color: slategrey;
+    @include smaller(sm) {
+      font-size: 20px;
+    }
+  }
+}

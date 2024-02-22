@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+a {
+  color: inherit;
+  text-decoration: inherit;
+  cursor:pointer;
+}
+* {
+  font-family: 'Salsa', sans-serif !important;
+}
+
+
+
+body, html{
+  height: 100%;
+  margin: 0;
+}

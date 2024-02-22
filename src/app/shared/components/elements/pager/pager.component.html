@@ -1,0 +1,16 @@
+<div class="pages" *ngIf="pageCount > 1">
+  <button class="page" [style.visibility]="selectedPage!==1 ? 'visible': 'hidden'" (click)="pageChange(selectedPage-1)">
+    &lsaquo;
+  </button>
+  <div class="select-page" (click)="dropDowned =!dropDowned">
+    {{selectedPage}} of {{pageCount}} &#x25BC;
+    <div class="dropdown" *ngIf="dropDowned">
+      <div class="item" *ngFor="let i of pages" (click)="pageChange(i)">
+        {{i}}
+      </div>
+    </div>
+  </div>
+  <button class="page page--right" [style.visibility]="selectedPage===pageCount ? 'hidden': 'visible'"  (click)="pageChange(selectedPage +1)">
+    &lsaquo;
+  </button>
+</div>

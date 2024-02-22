@@ -1,0 +1,27 @@
+@import "shared";
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  max-height: 800px;
+  align-items: center;
+
+
+  .guess{
+    max-width: 1020px;
+    width: 100%;
+
+    @include smaller(md){
+      width: 100%;
+    }
+    .image-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      img{
+        width: 250px;
+        height: 250px;
+      }
+    }
+  }
+}
+

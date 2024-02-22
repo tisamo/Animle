@@ -1,0 +1,34 @@
+<header>
+  <a routerLink="/"><h3>Animle<span>.</span></h3></a>
+  <nav>
+    <a routerLink="random">Random challenge</a>
+    <a routerLink="game-modes">Game Modes</a>
+    <a routerLink="contact">Contact</a>
+  </nav>
+
+  <a class="login" *ngIf="!authService.isAuthenticated" routerLink="auth/login">Login</a>
+  <a class="login" *ngIf="authService.isAuthenticated" (click)="logOut()">LogOut</a>
+
+  <button class="hamburger-icon" (click)="navMenuVisible =! navMenuVisible">
+    &#9776;
+  </button>
+  <div class="nav-menu" *ngIf="navMenuVisible">
+    <h3 routerLink="/"><h3>Animle<span>.</span></h3></h3>
+    <a [routerLink]="['/']" (click)="navMenuVisible =! navMenuVisible" routerLinkActive="active-link">Home</a>
+    <a [routerLink]="['/random']" (click)="navMenuVisible =! navMenuVisible" routerLinkActive="active-link">Random
+      Challenge Challenge</a>
+
+    <a [routerLink]="['/game-modes']" (click)="navMenuVisible =! navMenuVisible" routerLinkActive="active-link">Game modes</a>
+
+    <a [routerLink]="['/contact']" (click)="navMenuVisible =! navMenuVisible" routerLinkActive="active-link">Contact</a>
+
+    <a  *ngIf="!authService.isAuthenticated" (click)="navMenuVisible =! navMenuVisible" [routerLink]="['/' ,'auth','login']">Login</a>
+    <a  *ngIf="authService.isAuthenticated" (click)="logOut()">LogOut</a>
+
+    <a class="green" (click)="navMenuVisible =! navMenuVisible"
+       routerLinkActive="active-link">Back</a>
+
+
+
+  </div>
+</header>

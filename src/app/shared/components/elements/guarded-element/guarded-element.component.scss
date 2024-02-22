@@ -1,0 +1,34 @@
+@import "shared";
+
+.container{
+  position: relative;
+  width: 100%;
+  .shade{
+    text-align: center;
+    cursor:pointer;
+    background-color: black;
+    opacity: 0.9;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    @include hoverAnimation(opacity, 3s, infinite);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 10;
+    @include smaller(md){
+      opacity: 0.6;
+      font-size: 20px;
+      align-items: end;
+      .text{
+        padding-bottom: 10px;
+      }
+    }
+
+  }
+}
+

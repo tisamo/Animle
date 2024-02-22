@@ -1,0 +1,55 @@
+<div class="top">
+<div style="width: 60%">
+<h3>Quiz Creation</h3>
+<label for="title">Title of your Quiz</label>
+  <div>
+    <input id="title" class="title-input" [(ngModel)]="titleName">
+  </div>
+
+  <div class="search-row">
+    <div class="input-box">
+      <div>
+        <input [formControl]="inputControl" placeholder="Anime to add">
+        <div class="list">
+          <div class="list-item"
+               *ngFor="let item of searchList; let i = index" (click)="selectAnswer(item)"
+               [ngClass]="{'grey': i === selectedItemIndex}">{{item.title}} </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <button class="green save"
+          [disabled]="!selectedList.length"
+          (click)="saveQuiz()">Save Quiz</button>
+  <div class="quiz">
+    <div class="quiz-item" *ngFor="let a of selectedList; let i = index" >
+      <div class="anime">
+          <img [src]="a.thumbnail">
+        <div class="title">{{a.title}}</div>
+        <button  (click)="selectedImageId = i"> <span *ngIf="selectedImageId !=i; else covered">Set as Cover</span></button>
+
+        <button (click)="removeFromList(i)">Remove</button>
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+ <div class="infos" >
+   <div class="image">
+     <img  *ngIf="selectedList.length" [src]="selectedList[selectedImageId].thumbnail"/>
+   </div>
+
+ </div>
+
+
+</div>
+
+
+
+<ng-template #covered>
+  Selected Cover
+</ng-template>
