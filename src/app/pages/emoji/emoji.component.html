@@ -21,7 +21,7 @@
       </ng-container>
 
       <ng-container *ngIf="quiz[selectedQuiz].type == GameType.Shuffled">
-        <app-image-quiz [time]="time" [image]="quiz[selectedQuiz].image"></app-image-quiz>
+        <app-shifting-image [time]="time" [image]="quiz[selectedQuiz].image"></app-shifting-image>
       </ng-container>
 
       <ng-container *ngIf="quiz[selectedQuiz].type == GameType.Word">
