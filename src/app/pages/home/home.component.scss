@@ -3,8 +3,10 @@
   @include color-overlay('/purple',-150px, -500px );
 }
 h1{
+  font-size: 75px;
+
   @include smaller(lg){
-    font-size: 100px;
+    font-size: 50px;
   }
   @include smaller(md){
     font-size:50px;
@@ -59,6 +61,7 @@ h1{
     }
   }
   h5{
+    font-size:24px;
     @include smaller(md){
       font-size: 25px;
     }

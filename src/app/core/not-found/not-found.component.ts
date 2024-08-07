@@ -9,5 +9,9 @@ import {Router} from "@angular/router";
   styleUrl: './not-found.component.scss'
 })
 export class NotFoundComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    setTimeout(()=>{
+      this.router.navigate(['/']);
+    }, 5000);
+  }
 }

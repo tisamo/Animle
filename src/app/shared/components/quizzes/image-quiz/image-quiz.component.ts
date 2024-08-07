@@ -11,14 +11,13 @@ import {Words} from "../../../interfaces/words.inteface";
   templateUrl: './image-quiz.component.html',
   styleUrl: './image-quiz.component.scss'
 })
-export class ImageQuizComponent implements OnInit, OnChanges {
+export class ImageQuizComponent implements OnChanges {
   @Input() image: string = 'https://img.youtube.com/vi/gY5nDXOtv_o/hqdefault.jpg';
   @Input() time = 0;
   imageData: any = null;
   cubes: number[] = [];
   cubeColors: string[] =[];
 
-  ngOnInit(): void {}
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     if(changes['image']){

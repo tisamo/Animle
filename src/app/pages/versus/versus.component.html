@@ -2,7 +2,7 @@
   <div class="title-row">
     <div>
       <h4>Guess the <span class="green">name</span> of the anime</h4>
-      <h5>By  <span class="green">{{quiz[selectedQuiz]?.type}}</span></h5>
+      <h5>By  <span class="green">{{quiz[selectedQuiz].type}}</span></h5>
     </div>
     <div class="timer" *ngIf="gameStarted">00:{{20 - time}}</div>
   </div>

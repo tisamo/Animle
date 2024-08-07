@@ -37,7 +37,7 @@ export class DailyAnimeResolver implements Resolve<DailyGame> {
               image: a.image,
               type: a.type,
               myanimeListId: a.myanimeListId,
-              properties: JSON.parse(a.properties)
+              properties: a.properties.split(',')
             };
           })
         }

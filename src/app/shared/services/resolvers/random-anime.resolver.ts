@@ -22,7 +22,7 @@ export class RandomAnimeResolver implements Resolve<AnimeGame[]> {
         image: anime.image,
         type: anime.type,
         myanimeListId: anime.myanimeListId,
-        properties: JSON.parse(anime.properties)
+        properties: anime.properties.split(',')
       })))
     );
   }

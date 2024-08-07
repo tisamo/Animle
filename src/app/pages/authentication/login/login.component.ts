@@ -101,7 +101,7 @@ export class LoginComponent {
       case 'register':
         this.authService.register(this.authForm.value as RegisterInfos).subscribe({
           next: (res=>{
-            this.popupService.pushNewMessage( 'Succesful registration!',  3)
+            this.popupService.pushNewMessage( 'Succcesful registration!',  3)
             this.router.navigate(['auth', 'login']);
 
           }),

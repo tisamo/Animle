@@ -23,11 +23,5 @@ interface Animoji {
 })
 export class AppComponent  {
   constructor(public popupService: PopupService) {
-    console.log(environment.production);
   }
-
-
-
-
-
 }

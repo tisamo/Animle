@@ -10,12 +10,10 @@ import {Anime, AnimeGame, DailyGameResult, DailyResponse, GameType} from "../../
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {PopupService} from "../../shared/services/popup.service";
-import {QuizGame} from "../../shared/interfaces/Quiz.interface";
 import {GameOverPopupComponent} from "../../shared/components/popup/game-over-popup/game-over-popup.component";
 import {UtilityServiceService} from "../../shared/services/utility-service.service";
 import {ShiftingImage} from "../../shared/components/quizzes/shifing-image/image-quiz.component";
 import {ImageQuizComponent} from "../../shared/components/quizzes/image-quiz/image-quiz.component";
-import {SIGNAL} from "@angular/core/primitives/signals";
 
 interface AnimeListItem {
   title: string;
@@ -187,7 +185,6 @@ export class EmojiComponent implements OnDestroy {
       if (this.quizType == 'daily') {
         const dailyResult: DailyGameResult = {result: this.result, gameId: this.gameGuid, type: this.quizType}
         this.malService.setDailyAnimePoints$(dailyResult).subscribe((res) => {
-          console.log(res);
         }, error => console.log(error))
       }
       this.showPopUp();
@@ -216,7 +213,7 @@ export class EmojiComponent implements OnDestroy {
             image: anime.image,
             type: anime.type,
             myanimeListId: anime.myanimeListId,
-            properties: JSON.parse(anime.properties)
+            properties: anime.properties.split(',')
           })))
         ).subscribe((res: AnimeGame[])=>{
           this.quiz = res;
