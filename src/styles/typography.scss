@@ -26,7 +26,6 @@ h5{
 h6{
   font-size:20px;
 }
-
 @include smaller(md){
   h1{
     font-size: 40px;
@@ -54,5 +53,4 @@ h6{
   h6{
     font-size:20px;
   }
-
 }

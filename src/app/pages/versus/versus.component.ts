@@ -34,11 +34,9 @@ interface AnimeListItem {
   styleUrl: './versus.component.scss',
   providers: [SignalrService]
 })
-export class VersusComponent implements OnInit, OnDestroy, AfterViewInit{
+export class VersusComponent implements OnInit, OnDestroy, AfterViewInit {
   protected readonly GameType = GameType;
-
-  // @ts-ignore
-  @ViewChild('input') elementRef: ElementRef;
+  @ViewChild('input') elementRef: ElementRef | null = null;
   searchList: AnimeListItem[] = [];
   inputControl = new FormControl<string>('', []);
   gameStarted = false;
@@ -68,16 +66,16 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit{
     await this.signalR.registerPlayer();
     await this.signalR.findOpponent();
   }
-  mapAnimes(animes?: Anime[]){
-    if(!animes){
-      return ;
+  mapAnimes(animes?: Anime[]) {
+    if (!animes) {
+      return;
     }
     return animes.map((a: Anime): AnimeGame => {
       return {
         id: a.id,
         title: a.title,
-        words: a.description ? a.description.split(' ').slice(0,120).map((w)=>{
-          return{
+        words: a.description ? a.description.split(' ').slice(0, 120).map((w) => {
+          return {
             text: w,
             shown: false
           }
@@ -95,7 +93,7 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit{
   async ngOnDestroy(): Promise<void> {
     await this.signalR.disconnect();
 
-    if(this.interval){
+    if (this.interval) {
       this.interval.unsubscribe();
     }
     this.beforeUnloadListener();
@@ -103,30 +101,29 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   ngAfterViewInit() {
-    this.signalR.dataSubject.subscribe((data)=>{
+    this.signalR.dataSubject.subscribe((data) => {
       this.quiz = data as AnimeGame[];
       this.startGame();
     });
   }
 
-  listenToKeyEvents(){
+  listenToKeyEvents() {
     this.keyEventListener = this.renderer.listen(window, 'keydown', event => {
-      // Handle the event
-      if(!this.searchList.length) return;
-      if(event.key == 'ArrowDown'){
+      if (!this.searchList.length) return;
+      if (event.key == 'ArrowDown') {
         event.preventDefault();
-        if(this.selectedItemIndex === this.searchList.length -1){
+        if (this.selectedItemIndex === this.searchList.length - 1) {
           this.selectedItemIndex = 0;
           return;
         }
         this.selectedItemIndex++;
       }
-      if(event.key === 'ArrowUp'){
+      if (event.key === 'ArrowUp') {
         event.preventDefault();
-        if(this.selectedItemIndex ===0) return;
+        if (this.selectedItemIndex === 0) return;
         this.selectedItemIndex--;
       }
-      if(event.key == 'Enter'){
+      if (event.key == 'Enter') {
         this.selectAnswer(this.searchList[this.selectedItemIndex].id)
         this.selectedItemIndex = 0;
         this.inputControl.setValue('');
@@ -134,44 +131,46 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit{
     });
   }
 
-  subscribeToGameEvents(){
-    this.signalR.nextSubject.pipe(takeUntilDestroyed()).subscribe(async (message)=>{
-      if(message == 'opd'){
+  subscribeToGameEvents() {
+    this.signalR.nextSubject.pipe(takeUntilDestroyed()).subscribe(async (message) => {
+      if (message == 'opd') {
         this.quiz = [];
         this.time = 0;
         alert("opponent disconnected");
         this.interval.unsubscribe();
-      } else{
+      } else {
         this.inputControl.setValue('');
         await this.handleQuizChange();
       }
 
     });
-    this.signalR.endGameResult.pipe(takeUntilDestroyed()).subscribe((data)=>{
+    this.signalR.endGameResult.pipe(takeUntilDestroyed()).subscribe((data) => {
 
     })
     this.inputControl.valueChanges.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe(
-      (filterString)=> this.filterItems(filterString ? filterString : ''))
+      (filterString) => this.filterItems(filterString ? filterString : ''))
   }
-   startGame() {
+
+  startGame() {
     this.elementRef?.nativeElement.focus();
     this.gameStarted = true;
     this.interval = interval(1000).subscribe(async () => {
       if (this.time === 20) {
-      await   this.handleQuizChange();
+        await this.handleQuizChange();
       }
       this.time += 1;
     });
   }
-  filterItems(filterString: string ) {
-    if(filterString.length < 2){
+
+  filterItems(filterString: string) {
+    if (filterString.length < 2) {
       this.searchList = [];
       return;
     }
     this.malService.filterAnime$(filterString).subscribe(
       (res) => {
-        this.searchList = res.map((item)=>{
-          return{
+        this.searchList = res.map((item) => {
+          return {
             title: item.title.trim().length ? item.title : item.japaneseTitle,
             id: item.myanimeListId
           }
@@ -179,16 +178,18 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit{
       },
     );
   }
-  async selectAnswer(id: number){
-    if(this.quiz[this.selectedQuiz].myanimeListId ==id){
+
+  async selectAnswer(id: number) {
+    if (this.quiz[this.selectedQuiz].myanimeListId == id) {
       this.result += (100 + this.time * 5);
       await this.signalR.next();
       return;
     }
     this.popupService.pushNewMessage('Incorrect Answer', 3)
   }
-  async handleQuizChange(){
-    if(this.selectedQuiz == this.quiz.length -1){
+
+  async handleQuizChange() {
+    if (this.selectedQuiz == this.quiz.length - 1) {
       this.time = 0;
       this.selectedQuiz = 0;
       this.gameStarted = false;

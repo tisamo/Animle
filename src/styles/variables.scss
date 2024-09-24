@@ -1,6 +1,6 @@
 @import "breakpoints";
 $neon-green: #43DEA8;
-
+$purple: #630436;
 
 
 
@@ -62,7 +62,7 @@ $neon-green: #43DEA8;
 }
 
 @mixin color-overlay($image-path, $position-x, $position-y) {
-  background: url("../assets/img/" + $image-path + ".png") no-repeat;
+  background: url("../assets/img/" + $image-path + ".avif") no-repeat;
   background-position-x: $position-x;
   background-position-y: $position-y;
   -webkit-background-clip: text;
@@ -70,7 +70,7 @@ $neon-green: #43DEA8;
 }
 
 @mixin bgImage($image-path,$position-x, $position-y) {
-  background: url("../assets/img/" + $image-path + ".png") no-repeat;
+  background: url("../assets/img/" + $image-path + ".avif") no-repeat;
   background-position-x: $position-x;
   background-position-y: $position-y;
 }

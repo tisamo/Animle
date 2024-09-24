@@ -36,13 +36,11 @@ export class SignalrService {
 
     this.connection.onreconnecting((error: any) => {
       console.log(`Connection lost due to error "${error}". Reconnecting.`);
-      // Here, you can update the UI to inform the user that the connection is being re-established.
     });
 
 // Handle the reconnected event
     this.connection.onreconnected((connectionId: any) => {
       console.log(`Connection reestablished. Connected with connectionId "${connectionId}".`);
-      // Here, you can update the UI to inform the user that the connection has been re-established.
     });
 
     this.connection.on('disconnected', (data:any)=>{

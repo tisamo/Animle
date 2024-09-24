@@ -1,0 +1,70 @@
+@import "breakpoints";
+.container{
+  padding-bottom: 100px;
+  padding-inline: 50px;
+  @include smaller(md){
+    padding-inline: 10px;
+  }
+  .controls{
+    max-width: 1500px;
+    display: flex;
+    width: 100%;
+    margin-top:30px;
+    margin-inline: auto;
+    height: 30px;
+    border: 2px solid purple;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    overflow: hidden;
+    font-size: 25px;
+    user-select: none;
+
+    .control{
+      cursor: pointer;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      &--selected{
+        background-color: purple;
+        color: white;
+        font-weight: bold;
+      }
+      &:first-child{
+        border-right: 2px solid purple;
+      }
+      &:last-child{
+        border-left: 2px solid purple;
+      }
+    }
+  }
+  .leader-board{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    .item{
+      display: flex;
+      width: 100%;
+      .col{
+        font-size: 25px;
+        @include smaller(md){
+          font-size: 20px;
+        }
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        &:not(.col:first-child){
+          align-items: center;
+        }
+      }
+    }
+  }
+  .no-records{
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 100px;
+    text-align: center;
+  }
+}

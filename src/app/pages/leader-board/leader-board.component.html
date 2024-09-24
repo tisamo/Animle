@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="controls">
+    <div class="control" (click)="selectTab($event)"
+         [ngClass]="{'control--selected': selectedTab ==='Daily'}" aria-roledescription="button">
+      Daily
+    </div>
+    <div class="control"  (click)="selectTab($event)"
+         [ngClass]="{'control--selected': selectedTab ==='Weekly'}"aria-roledescription="button" >
+      Weekly
+    </div>
+    <div class="control" [ngClass]="{'control--selected': selectedTab ==='Versus'}" (click)="selectTab($event)"
+         aria-roledescription="button">
+      Versus
+    </div>
+  </div>
+  <div class="leader-board" *ngIf="leaderBoard.length">
+    <div class="item" *ngFor="let item of leaderBoard; let i = index">
+      <div class="col">
+        {{i+1}}
+      </div>
+      <div class="col">
+        {{item.name}}
+      </div>
+      <div class="col">
+        {{item.points}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!leaderBoard.length" class="no-records">
+        No Records Found
+  </div>
+</div>

@@ -85,11 +85,10 @@ export class EmojiComponent implements OnDestroy {
 
   listenToKeyEvents() {
     this.keyEventListener = this.renderer.listen(window, 'keydown', event => {
-      // Handle the event
       if (!this.searchList.length) return;
       if (event.key == 'ArrowDown') {
         event.preventDefault();
-        if (this.selectedItemIndex === this.searchList.length - 1) {
+        if (this.selectedItemIndex === this.searchList.length ) {
           this.selectedItemIndex = 0;
           return;
         }
@@ -120,19 +119,19 @@ export class EmojiComponent implements OnDestroy {
         this.quiz = this.actr.snapshot.data['data'].splice(0,5) as AnimeGame[];
         return;
       }
+
       this.gameGuid = this.actr.snapshot.data['data'].id;
-      this.quiz = this.actr.snapshot.data['data'].anime.splice(0, 1) as AnimeGame[];
+      this.quiz = this.actr.snapshot.data['data'] as AnimeGame[];
     } else {
-      this.quiz = this.actr.snapshot.data['data'].animes.splice(0, 5) as AnimeGame[];
+      this.quiz = this.actr.snapshot.data['data']['animes'] as AnimeGame[];
     }
-    this.previousAnswer = this.quiz[this.selectedQuiz].title;
+    this.previousAnswer = this.quiz[this.selectedItemIndex].title;
   }
 
   startGame() {
     this.elementRef.nativeElement.focus();
     this.gameStarted = !this.gameStarted;
     this.gameActionText = 'Play again!';
-
     this.interval = interval(1000).subscribe(() => {
       if (this.time === 20) {
         this.handleQuizChange();
@@ -164,7 +163,7 @@ export class EmojiComponent implements OnDestroy {
     if (!this.gameStarted) return;
     if (this.quiz[this.selectedQuiz].myanimeListId == id) {
       this.selectedItemIndex = 0;
-      this.result += (100 + this.time * 5);
+      this.result += 200 - (this.time * 5);
       this.handleQuizChange();
       this.inputControl.setValue('');
       this.popupService.pushNewMessage('Correct Answer', 3)

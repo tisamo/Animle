@@ -6,7 +6,6 @@ import {query} from "@angular/animations";
   providedIn: 'root'
 })
 export class UtilityServiceService {
-
   createQueryString(queryParamObject: any){
     const keys = Object.keys(queryParamObject);
     let queryString = '?';

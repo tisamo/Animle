@@ -5,7 +5,7 @@
   margin:0 auto;
   width: 100%;
   h3,h5{
-    @include color-overlay('/purple1', -150px, -250px);
+    color: $purple;
 
   }
   @include smaller(sm){

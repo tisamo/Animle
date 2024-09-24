@@ -1,12 +1,9 @@
-<div class="content">
   <app-header></app-header>
-  <main >
+  <main>
     <div class="content">
       <app-message *ngIf="popupService.messages.length"></app-message>
       <router-outlet></router-outlet>
     </div>
-    <app-footer></app-footer>
-
   </main>
-</div>
+  <app-footer></app-footer>
 

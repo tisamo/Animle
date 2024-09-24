@@ -25,7 +25,6 @@ export class UserMadeQuizesComponent {
   userLikes: number[] = [];
   itemCount = 0;
   limit = 25;
-  componentInitialized = true;
   constructor(private actr: ActivatedRoute,
               private router: Router,
               private utilityService: UtilityServiceService,
@@ -36,10 +35,7 @@ export class UserMadeQuizesComponent {
     this.userLikes = snapshot.likedQuizzes;
 
     this.actr.queryParams.subscribe((params)=>{
-      if(this.componentInitialized){
-        this.componentInitialized = false;
-        return;
-      }
+
       this.quizService.getQuizzes$(this.utilityService.createQueryString(params)).subscribe({
         next: (res) => {
           this.quizList = res.list;

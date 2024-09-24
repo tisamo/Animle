@@ -10,6 +10,7 @@ export const routes: Routes = [
   {path: '', loadComponent: () => import('./pages/home/home.component').then((mod=> mod.HomeComponent))},
   {path: 'daily',canActivate: [AuthGuard], resolve:{data: DailyAnimeResolver},  loadComponent: () => import('./pages/emoji/emoji.component').then((mod=> mod.EmojiComponent))},
   {path: 'random', resolve:{data: RandomAnimeResolver},  loadComponent: () => import('./pages/emoji/emoji.component').then((mod=> mod.EmojiComponent))},
+  {path: 'leader-board',  loadComponent: () => import('./pages/leader-board/leader-board.component').then((mod=> mod.LeaderBoardComponent))},
   {path: 'quiz', canActivate: [AuthGuard], resolve: {quizList: QuizlistResolver}, loadComponent: () => import('./pages/user-made-quizes/user-made-quizes.component').then((mod=> mod.UserMadeQuizesComponent))},
   {path: 'quiz/create', canActivate: [AuthGuard], loadComponent: () => import('./pages/create-quiz/create-quiz.component').then((mod=> mod.CreateQuizComponent))},
   {path: 'quiz/:id', resolve:{data: QuizResolver}, loadComponent: () => import('./pages/emoji/emoji.component').then((mod=> mod.EmojiComponent))},
