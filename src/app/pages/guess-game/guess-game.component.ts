@@ -1,11 +1,7 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {DescriptionQuizComponent} from "../../shared/components/quizzes/description-quiz/description-quiz.component";
-import {EmojiQuizComponent} from "../../shared/components/quizzes/emoji-quiz/emoji-quiz.component";
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {GameOverPopupComponent} from "../../shared/components/popup/game-over-popup/game-over-popup.component";
-import {ImageQuizComponent} from "../../shared/components/quizzes/image-quiz/image-quiz.component";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
-import {ShiftingImage} from "../../shared/components/quizzes/shifing-image/image-quiz.component";
 import {Words} from "../../shared/interfaces/words.inteface";
 import {Anime, AnimeGame, DailyGameResult} from "../../shared/interfaces/AnimeRespose";
 import {MyAnimeListService} from "../../shared/services/mal.service";
@@ -20,14 +16,10 @@ import {AnimeListItem} from "../../shared/interfaces/search-list";
   selector: 'app-guess-game',
   standalone: true,
   imports: [
-    DescriptionQuizComponent,
-    EmojiQuizComponent,
     FormsModule,
     GameOverPopupComponent,
-    ImageQuizComponent,
     NgForOf,
     NgIf,
-    ShiftingImage,
     NgClass,
     ReactiveFormsModule
   ],
@@ -47,23 +39,15 @@ export class GuessGameComponent {
   quiz: AnimeGame[] = [];
   result = 0;
   selectedQuiz = 0;
-  timeLimit = 15;
   selectedItemIndex = 0;
-  previousAnswer = '';
   gamePlayed = 0;
   keyEventListener: any;
-  quizType = 'random';
   beforeUnloadListener: any;
   gameActionText = 'Start Game!';
-  gameGuid = '';
   popupShown = false;
   constructor(private malService: MyAnimeListService,
               private renderer: Renderer2,
-              private popupService: PopupService,
-              private utility: UtilityServiceService,
-              private router: Router,
-              private actr: ActivatedRoute) {
-    this.getDataFromSnapshot();
+              private popupService: PopupService) {
 
     this.listenToKeyEvents();
     this.beforeUnloadListener = this.renderer.listen(window, 'onbeforeunload', this.handleBeforeUnload);
@@ -105,10 +89,6 @@ export class GuessGameComponent {
     if (this.gameStarted && !this.gameEnded) {
       localStorage.setItem('leftTournament', 'yes');
     }
-  }
-
-  getDataFromSnapshot() {
-    this.previousAnswer = this.quiz[this.selectedItemIndex].title;
   }
 
   startGame() {

@@ -1,13 +1,15 @@
 export type LoginInfos = {
-  Name: string;
-  Password: string;
-}
+  name: string;
+  password: string;
+};
 
 export type RegisterInfos = {
-  Name: string;
-  Password: string;
-  Email:string;
-}
- export type User = {
+  name: string;
+  password: string;
+  email: string;
+};
+
+export type User = {
   name?: string;
- }
+  email?: string;
+};
