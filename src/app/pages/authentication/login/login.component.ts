@@ -93,9 +93,6 @@ export class LoginComponent {
             this.authService.isAuthenticated = true;
             this.router.navigate(['/']);
           }),
-          error: (err=>{
-            this.popupService.pushErrorMessage(err)
-          })
         })
         break;
       case 'register':
@@ -105,9 +102,6 @@ export class LoginComponent {
             this.router.navigate(['auth', 'login']);
 
           }),
-          error: (err=>{
-            this.popupService.pushNewMessage(err.error.response, 3)
-          })
         })
         break;
       case 'password-reset':
