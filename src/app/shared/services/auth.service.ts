@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {SimpleResponse} from "../interfaces/simple-response";
 import {environment} from "../../../environments/environment";
 import {LoginInfos, RegisterInfos} from "../interfaces/auth";
+import { getFingerprint } from '@thumbmarkjs/thumbmarkjs'
 
 type Token = {
   token: string;
@@ -15,8 +16,17 @@ type Token = {
 export class AuthService {
   public isAuthenticated: any;
   public userName = '';
-  constructor(private http: HttpClient) { }
+  public fingerPrintOfDevice = '';
+  constructor(private http: HttpClient) {
+    getFingerprint(true).then((print)=>{
+      this.fingerPrintOfDevice = print.hash;
+      console.log(this.fingerPrintOfDevice)
+    });
+  }
 
+  getFingerPrint(){
+
+  }
   login(loginInfos: LoginInfos): Observable<Token>{
     return this.http.post<Token>(`${environment.apiUrl}user/login`,loginInfos);
   }
