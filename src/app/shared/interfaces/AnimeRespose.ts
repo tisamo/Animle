@@ -20,9 +20,8 @@ export interface DailyResponse{
 }
 
 export interface DailyGameResult{
-  gameId: string;
+  gameGuid: string;
   result: number;
-  type: string;
 }
 
 export interface DailyGame{

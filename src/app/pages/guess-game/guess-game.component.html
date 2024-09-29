@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="title-row">
+    <div>
+      <h4>Guess the <span class="green">name</span></h4>
+      <h5>By  <span class="green">Emojis</span></h5>
+    </div>
+  </div>
+  <div class="input-box">
+    <input #input [readonly]="!gameStarted" [formControl]="inputControl" placeholder="Type here after game started" >
+    <div class="list">
+      <div class="list-item" *ngFor="let item of searchList; let i = index"
+           [ngClass]="{'grey': i === selectedItemIndex}"
+           (click)="selectAnswer(item.id)" >{{item.title}} </div>
+    </div>
+  </div>
+  <section class="game-container">
+
+  </section>
+
+  <ng-template #start>
+    <h1 (click)="startGame()" *ngIf="gamePlayed == 0">{{gameActionText}}</h1>
+  </ng-template>
+  <app-game-over-popup [result]="result" *ngIf="popupShown" (action)="handlePopupAction($event)"></app-game-over-popup>
+</div>

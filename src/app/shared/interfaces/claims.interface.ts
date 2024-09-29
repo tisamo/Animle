@@ -30,16 +30,3 @@ interface Data {
   identity: Identity;
 }
 
-const data: Data = {
-  claims: [
-    // ... (Array of Claim objects)
-  ],
-  identities: [
-    // ... (Array of Identity objects)
-  ],
-  identity: {
-    name: null,
-    authenticationType: "AuthenticationTypes.Federation",
-    isAuthenticated: true
-  }
-};

@@ -14,11 +14,9 @@ import {GameOverPopupComponent} from "../../shared/components/popup/game-over-po
 import {UtilityServiceService} from "../../shared/services/utility-service.service";
 import {ShiftingImage} from "../../shared/components/quizzes/shifing-image/image-quiz.component";
 import {ImageQuizComponent} from "../../shared/components/quizzes/image-quiz/image-quiz.component";
+import {AnimeListItem} from "../../shared/interfaces/search-list";
 
-interface AnimeListItem {
-  title: string;
-  id: number;
-}
+
 
 @Component({
   selector: 'app-emoji',
@@ -52,6 +50,7 @@ export class EmojiComponent implements OnDestroy {
   quiz: AnimeGame[] = [];
   result = 0;
   selectedQuiz = 0;
+  timeLimit = 15;
   selectedItemIndex = 0;
   previousAnswer = '';
   gamePlayed = 0;
@@ -81,6 +80,14 @@ export class EmojiComponent implements OnDestroy {
     }
     this.beforeUnloadListener();
     this.keyEventListener();
+    if(!this.gameEnded && this.gameStarted){
+      if(this.quizType =='daily'){
+        const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid}
+        this.malService.setDailyAnimePoints$(dailyResult, 'daily').subscribe((res) => {
+          console.log(res);
+        }, error => console.log(error))
+      }
+    }
   }
 
   listenToKeyEvents() {
@@ -119,12 +126,12 @@ export class EmojiComponent implements OnDestroy {
         this.quiz = this.actr.snapshot.data['data'].splice(0,5) as AnimeGame[];
         return;
       }
-
       this.gameGuid = this.actr.snapshot.data['data'].id;
-      this.quiz = this.actr.snapshot.data['data'] as AnimeGame[];
+      this.quiz = this.actr.snapshot.data['data']['anime'].slice(0,3) as AnimeGame[];
     } else {
-      this.quiz = this.actr.snapshot.data['data']['animes'] as AnimeGame[];
+      this.quiz = this.actr.snapshot.data['data']['anime'] as AnimeGame[];
     }
+
     this.previousAnswer = this.quiz[this.selectedItemIndex].title;
   }
 
@@ -132,8 +139,10 @@ export class EmojiComponent implements OnDestroy {
     this.elementRef.nativeElement.focus();
     this.gameStarted = !this.gameStarted;
     this.gameActionText = 'Play again!';
+    this.timeLimit = this.quiz[this.selectedQuiz].type === 'emoji'? 20 : 15 ;
+
     this.interval = interval(1000).subscribe(() => {
-      if (this.time === 20) {
+      if (this.time === this.timeLimit) {
         this.handleQuizChange();
         this.popupService.pushNewMessage(`The answer was: ${this.previousAnswer}`, 5);
       }
@@ -181,9 +190,10 @@ export class EmojiComponent implements OnDestroy {
       this.inputControl.setValue('');
       this.interval.unsubscribe();
       this.gamePlayed++;
-      if (this.quizType == 'daily') {
-        const dailyResult: DailyGameResult = {result: this.result, gameId: this.gameGuid, type: this.quizType}
-        this.malService.setDailyAnimePoints$(dailyResult).subscribe((res) => {
+      if(this.quizType =='daily'){
+        const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid}
+        this.malService.setDailyAnimePoints$(dailyResult, 'daily').subscribe((res) => {
+          console.log(res);
         }, error => console.log(error))
       }
       this.showPopUp();
@@ -191,6 +201,11 @@ export class EmojiComponent implements OnDestroy {
     }
     this.time = 0;
     this.selectedQuiz++;
+    if(this.quiz[this.selectedQuiz].type === 'emoji'){
+      this.timeLimit = 20;
+    }else{
+      this.timeLimit = 15;
+    }
   }
   showPopUp(){
     this.popupShown = true;

@@ -10,21 +10,20 @@ export interface QuizCreation{
   selectedImageId: number;
 }
 
-export interface QuizResponse{
+interface BaseQuiz {
   id: number;
   title: string;
   createdAt: Date;
-  animes: Anime[];
   thumbnail: string;
   user?: User;
 }
-export interface QuizGame{
-  id: number;
-  title: string;
-  createdAt: Date;
+
+export interface QuizResponse extends BaseQuiz {
+  animes: Anime[];
+}
+
+export interface QuizGame extends BaseQuiz {
   animes?: Anime[];
-  thumbnail: string;
-  user?: User;
 }
 
 export interface QuizList{

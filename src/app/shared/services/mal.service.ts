@@ -13,12 +13,16 @@ export class MyAnimeListService {
   constructor(private http: HttpClient) {
   }
 
-  getDailyAnime$(): Observable<string> {
-    return this.http.get(`${environment.apiUrl}anime/daily`, { responseType: 'text' });
+  getDailyAnime$(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}anime/daily`);
   }
 
-  setDailyAnimePoints$(gameResult: DailyGameResult): Observable<SimpleResponse> {
-    return this.http.post<SimpleResponse>(`${environment.apiUrl}anime/contest`, gameResult);
+  getDailyAnimeGuess(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}anime/emoji-quiz`);
+  }
+
+  setDailyAnimePoints$(gameResult: DailyGameResult, type: string): Observable<SimpleResponse> {
+    return this.http.post<SimpleResponse>(`${environment.apiUrl}anime/contest/${type}`, gameResult);
   }
 
 

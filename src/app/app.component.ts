@@ -8,6 +8,7 @@ import {PopupService} from "./shared/services/popup.service";
 import {AuthService} from "./shared/services/auth.service";
 import {GameOverPopupComponent} from "./shared/components/popup/game-over-popup/game-over-popup.component";
 import {environment} from "../environments/environment";
+import {MyAnimeListService} from "./shared/services/mal.service";
 
 interface Animoji {
   title: string;
@@ -23,5 +24,6 @@ interface Animoji {
 })
 export class AppComponent  {
   constructor(public popupService: PopupService) {
+
   }
 }

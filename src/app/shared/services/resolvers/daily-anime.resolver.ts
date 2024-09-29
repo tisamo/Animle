@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {catchError, map, Observable, throwError} from 'rxjs';
+import {catchError, map, Observable, tap, throwError} from 'rxjs';
 import {Anime, AnimeGame, DailyGame, DailyResponse} from "../../interfaces/AnimeRespose";
 import {MyAnimeListService} from "../mal.service";
 import {CryptoService} from "../crypto.service";
@@ -16,13 +16,15 @@ export class DailyAnimeResolver implements Resolve<DailyGame> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.malService.getDailyAnime$().pipe(
-      map((anim) => this.cryptoService.decodeData(anim)),
-      map((animes: DailyResponse): DailyGame => {
+      tap((an)=>{
+        console.log(an);
+      }),
+      map((animes: any): DailyGame => {
         return {
           id: animes.id,
           type: animes.type,
-          createdAt: animes.createdAt,
-          anime: animes.anime.map((a: Anime) => {
+          createdAt: animes.timeCreated,
+          anime: animes.animes.map((a: Anime) => {
             return {
               id: a.id,
               title: a.title,
