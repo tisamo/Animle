@@ -53,6 +53,16 @@ export class GuessGameComponent {
     this.beforeUnloadListener = this.renderer.listen(window, 'onbeforeunload', this.handleBeforeUnload);
     this.inputControl.valueChanges.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe(
       (filterString) => this.filterItems(filterString ? filterString : ''))
+
+    var devtools:any = function() {};
+    devtools.toString = function() {
+      if (!this.opened) {
+        alert("Opened");
+      }
+      this.opened = true;
+    }
+
+    console.log('%c', devtools);
   }
 
   ngOnDestroy(): void {

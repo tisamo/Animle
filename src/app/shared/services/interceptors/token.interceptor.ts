@@ -25,6 +25,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) =>  {
         if(message){
           popupService.pushNewMessage(message, 3);
         }
+        console.log(event);
       }
     }),
     catchError((error: HttpErrorResponse) => {

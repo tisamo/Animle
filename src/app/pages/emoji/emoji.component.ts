@@ -80,6 +80,14 @@ export class EmojiComponent implements OnDestroy {
     }
     this.beforeUnloadListener();
     this.keyEventListener();
+    if(!this.gameEnded && this.gameStarted){
+      if(this.quizType =='daily'){
+        const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid}
+        this.malService.setDailyAnimePoints$(dailyResult, 'daily').subscribe((res) => {
+          console.log(res);
+        }, error => console.log(error))
+      }
+    }
   }
 
   listenToKeyEvents() {
@@ -119,10 +127,11 @@ export class EmojiComponent implements OnDestroy {
         return;
       }
       this.gameGuid = this.actr.snapshot.data['data'].id;
-      this.quiz = this.actr.snapshot.data['data'] as AnimeGame[];
+      this.quiz = this.actr.snapshot.data['data']['anime'].slice(0,3) as AnimeGame[];
     } else {
-      this.quiz = this.actr.snapshot.data['data']['animes'] as AnimeGame[];
+      this.quiz = this.actr.snapshot.data['data']['anime'] as AnimeGame[];
     }
+
     this.previousAnswer = this.quiz[this.selectedItemIndex].title;
   }
 
@@ -181,9 +190,10 @@ export class EmojiComponent implements OnDestroy {
       this.inputControl.setValue('');
       this.interval.unsubscribe();
       this.gamePlayed++;
-      if (this.quizType == 'daily') {
-        const dailyResult: DailyGameResult = {result: this.result, gameId: this.gameGuid, type: this.quizType}
-        this.malService.setDailyAnimePoints$(dailyResult).subscribe((res) => {
+      if(this.quizType =='daily'){
+        const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid}
+        this.malService.setDailyAnimePoints$(dailyResult, 'daily').subscribe((res) => {
+          console.log(res);
         }, error => console.log(error))
       }
       this.showPopUp();

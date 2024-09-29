@@ -3,6 +3,7 @@ import {Router, RouterLink} from "@angular/router";
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../shared/services/auth.service";
 import {SimpleResponse} from "../../shared/interfaces/simple-response";
+import {MyAnimeListService} from "../../shared/services/mal.service";
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import {SimpleResponse} from "../../shared/interfaces/simple-response";
 export class HeaderComponent {
   navMenuVisible  = false;
   constructor(public authService: AuthService,
+              private malService: MyAnimeListService,
               private router: Router) {
     this.authService.isSignedIn().subscribe((res: SimpleResponse)=>{
       this.authService.isAuthenticated = true;
