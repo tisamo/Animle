@@ -54,15 +54,6 @@ export class GuessGameComponent {
     this.inputControl.valueChanges.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe(
       (filterString) => this.filterItems(filterString ? filterString : ''))
 
-    var devtools:any = function() {};
-    devtools.toString = function() {
-      if (!this.opened) {
-        alert("Opened");
-      }
-      this.opened = true;
-    }
-
-    console.log('%c', devtools);
   }
 
   ngOnDestroy(): void {

@@ -20,7 +20,6 @@ export class AuthService {
   constructor(private http: HttpClient) {
     getFingerprint(true).then((print)=>{
       this.fingerPrintOfDevice = print.hash;
-      console.log(this.fingerPrintOfDevice)
     });
   }
 

@@ -84,7 +84,6 @@ export class EmojiComponent implements OnDestroy {
       if(this.quizType =='daily'){
         const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid}
         this.malService.setDailyAnimePoints$(dailyResult, 'daily').subscribe((res) => {
-          console.log(res);
         }, error => console.log(error))
       }
     }
