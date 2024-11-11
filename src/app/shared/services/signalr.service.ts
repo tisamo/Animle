@@ -6,7 +6,6 @@ import {Observable, Subject} from "rxjs";
 @Injectable()
 export class SignalrService {
   connection: any;
-  gameData: AnimeGame[] = [];
   nextSubject = new Subject<any>();
   dataSubject = new Subject<any>();
   endGameResult = new Subject();
@@ -61,8 +60,12 @@ export class SignalrService {
       this.dataSubject.next(dataMapper(data));
     });
 
+    this.connection.on('tick', (time:number)=>{
+      this.dataSubject.next(time);
+    });
+
     this.connection.on('nextQuestion', (data:any)=>{
-      this.nextSubject.next(null);
+      this.nextSubject.next(data);
     });
 
   }
@@ -91,13 +94,13 @@ export class SignalrService {
     await this.connection.invoke("LoadState")
       .catch((err: any) => console.error(err));
   }
-  async  next(){
-    await this.connection.invoke("Next")
+  async  next(result: number){
+    await this.connection.invoke("Next", result )
       .catch((err: any) => console.error(err));
   }
 
-  async  endGame(result: number){
-    await this.connection.invoke("GameEnd", result)
+  async  endGame(){
+    await this.connection.invoke("GameEnd")
       .catch((err: any) => console.error(err));
   }
 

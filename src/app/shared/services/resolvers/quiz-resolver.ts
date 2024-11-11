@@ -25,9 +25,13 @@ export class QuizResolver implements Resolve<QuizGame> {
   }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<QuizGame> {
     const id = route.params['id'];
+    let obs =  this.quizService.quizById$(id);
+    if(route.url.length === 3){
+      obs =   this.quizService.getQuizForEditing$(id);
+    }
 
     // @ts-ignore
-    return this.quizService.quizById$(id).pipe(
+    return obs.pipe(
       map((quiz: QuizResponse) => ({
         id: quiz.id,
         title: quiz.title,

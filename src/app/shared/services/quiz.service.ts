@@ -16,6 +16,10 @@ export class QuizService {
   createQuiz$(quiz: QuizCreation){
     return this.http.post(`${environment.apiUrl}quiz`, quiz);
   }
+
+  editQuiz$(quiz: QuizCreation){
+    return this.http.put(`${environment.apiUrl}quiz`, quiz);
+  }
     getQuizzes$(queryString = ""): Observable< ListData<QuizResponse>>{
     return this.http.get< ListData<QuizResponse>>(`${environment.apiUrl}quiz${queryString}`);
   }
@@ -29,5 +33,9 @@ export class QuizService {
   }
   quizById$(id: string): Observable<QuizResponse>{
     return this.http.get<QuizResponse>(`${environment.apiUrl}quiz/${id}`);
+  }
+
+  getQuizForEditing$(id: string): Observable<QuizResponse>{
+    return this.http.get<QuizResponse>(`${environment.apiUrl}quiz/edit/${id}`);
   }
 }

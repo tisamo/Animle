@@ -15,6 +15,7 @@ import {UtilityServiceService} from "../../shared/services/utility-service.servi
 import {ShiftingImage} from "../../shared/components/quizzes/shifing-image/image-quiz.component";
 import {ImageQuizComponent} from "../../shared/components/quizzes/image-quiz/image-quiz.component";
 import {AnimeListItem} from "../../shared/interfaces/search-list";
+import {AuthService} from "../../shared/services/auth.service";
 
 
 
@@ -55,6 +56,7 @@ export class EmojiComponent implements OnDestroy {
   previousAnswer = '';
   gamePlayed = 0;
   keyEventListener: any;
+  isQuiz = false;
   quizType = 'random';
   beforeUnloadListener: any;
   gameActionText = 'Start Game!';
@@ -63,6 +65,7 @@ export class EmojiComponent implements OnDestroy {
   constructor(private malService: MyAnimeListService,
               private renderer: Renderer2,
               private popupService: PopupService,
+              private authService: AuthService,
               private utility: UtilityServiceService,
               private router: Router,
               private actr: ActivatedRoute) {
@@ -74,7 +77,7 @@ export class EmojiComponent implements OnDestroy {
       (filterString) => this.filterItems(filterString ? filterString : ''))
   }
 
-  ngOnDestroy(): void {
+  async ngOnDestroy(): Promise<void> {
     if (this.interval) {
       this.interval.unsubscribe();
     }
@@ -82,7 +85,7 @@ export class EmojiComponent implements OnDestroy {
     this.keyEventListener();
     if(!this.gameEnded && this.gameStarted){
       if(this.quizType =='daily'){
-        const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid}
+        const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid, fingerprint: await this.authService.getFingerPrint()}
         this.malService.setDailyAnimePoints$(dailyResult, 'daily').subscribe((res) => {
         }, error => console.log(error))
       }
@@ -125,13 +128,15 @@ export class EmojiComponent implements OnDestroy {
         this.quiz = this.actr.snapshot.data['data'].splice(0,5) as AnimeGame[];
         return;
       }
+
       this.gameGuid = this.actr.snapshot.data['data'].id;
       this.quiz = this.actr.snapshot.data['data']['anime'].slice(0,3) as AnimeGame[];
     } else {
-      this.quiz = this.actr.snapshot.data['data']['anime'] as AnimeGame[];
+      this.isQuiz = true;
+      this.quiz = this.actr.snapshot.data['data']['animes'] as AnimeGame[];
     }
 
-    this.previousAnswer = this.quiz[this.selectedItemIndex].title;
+    this.previousAnswer = this.quiz[this.selectedItemIndex]?.title;
   }
 
   startGame() {
@@ -139,7 +144,6 @@ export class EmojiComponent implements OnDestroy {
     this.gameStarted = !this.gameStarted;
     this.gameActionText = 'Play again!';
     this.timeLimit = this.quiz[this.selectedQuiz].type === 'emoji'? 20 : 15 ;
-
     this.interval = interval(1000).subscribe(() => {
       if (this.time === this.timeLimit) {
         this.handleQuizChange();
@@ -180,7 +184,7 @@ export class EmojiComponent implements OnDestroy {
     this.popupService.pushNewMessage('Incorrect Answer', 3)
   }
 
-  handleQuizChange() {
+  async handleQuizChange() {
     this.previousAnswer = this.quiz[this.selectedQuiz].title;
     if (this.selectedQuiz == this.quiz.length - 1) {
       this.time = 0;
@@ -190,7 +194,7 @@ export class EmojiComponent implements OnDestroy {
       this.interval.unsubscribe();
       this.gamePlayed++;
       if(this.quizType =='daily'){
-        const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid}
+        const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid, fingerprint: await this.authService.getFingerPrint()}
         this.malService.setDailyAnimePoints$(dailyResult, 'daily').subscribe((res) => {
           console.log(res);
         }, error => console.log(error))
@@ -211,8 +215,9 @@ export class EmojiComponent implements OnDestroy {
   }
 
   handlePopupAction(event: string) {
+    this.result = 0;
     switch (event){
-      case 'again':
+      case 'random':
         this.malService.gerRandomAnime$().pipe(
           map((animes: Anime[]) => animes.map((anime: Anime) => ({
             id: anime.id,
@@ -235,9 +240,22 @@ export class EmojiComponent implements OnDestroy {
           this.startGame();
         });
         break;
+      case 'again':
+        this.popupShown = false;
+        this.shuffleArray(this.quiz);
+        this.startGame();
+        break;
       case 'home':
         this.router.navigate(['/', 'game-modes'])
         break;
+    }
+  }
+  shuffleArray(array: any[]) {
+    for (let i = array.length - 1; i >= 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
     }
   }
 }

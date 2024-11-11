@@ -7,8 +7,8 @@
     <div class="text">You scored {{result}} points!</div>
 
     <div class="buttons">
-      <button class="main" (click)="emitAction('again')">
-        Play Again
+      <button class="main" (click)="emitAction(actionText)">
+        Play {{actionText}}!
       </button>
       <button class="main" (click)="emitAction('home')">
         Exit

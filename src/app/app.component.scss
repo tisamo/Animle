@@ -3,6 +3,7 @@ main{
   height: calc(100% - 210px);
   width: 100%;
   .content{
+    min-height: 100%;
     position: relative;
     max-width: 1600px;
     margin-inline: auto auto;

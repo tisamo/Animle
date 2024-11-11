@@ -17,13 +17,22 @@ export class AuthService {
   public isAuthenticated: any;
   public userName = '';
   public fingerPrintOfDevice = '';
-  constructor(private http: HttpClient) {
-    getFingerprint(true).then((print)=>{
-      this.fingerPrintOfDevice = print.hash;
-    });
+  public userId: number | null = null;
+   constructor(private http: HttpClient) {
+    if(this.fingerPrintOfDevice == ""){
+      return;
+    }
+    this.getFingerPrint();
   }
 
-  getFingerPrint(){
+  async getFingerPrint(): Promise<string>{
+     if(this.fingerPrintOfDevice!== ""){
+       return this.fingerPrintOfDevice;
+     }
+    await getFingerprint(true).then((print)=>{
+      this.fingerPrintOfDevice = print.hash;
+    });
+    return this.fingerPrintOfDevice;
 
   }
   login(loginInfos: LoginInfos): Observable<Token>{

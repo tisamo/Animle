@@ -1,7 +1,10 @@
 <header>
   <a routerLink="/"><h3>Animle<span>.</span></h3></a>
   <nav>
-    <a routerLink="random">Random challenge</a>
+    <a routerLink="/">Home</a>
+    <a routerLink="guess-game">Guess game</a>
+    <a routerLink="daily">Daily</a>
+    <a routerLink="random">Random</a>
     <a routerLink="game-modes">Game Modes</a>
     <a routerLink="contact">Contact</a>
   </nav>
@@ -15,8 +18,10 @@
   <div class="nav-menu" *ngIf="navMenuVisible">
     <h3 routerLink="/"><h3>Animle<span>.</span></h3></h3>
     <a [routerLink]="['/']" (click)="navMenuVisible =! navMenuVisible" routerLinkActive="active-link">Home</a>
+    <a [routerLink]="['/guess-game']" (click)="navMenuVisible =! navMenuVisible" routerLinkActive="active-link">Guess Game</a>
+
     <a [routerLink]="['/random']" (click)="navMenuVisible =! navMenuVisible" routerLinkActive="active-link">Random
-      Challenge Challenge</a>
+      Challenge</a>
 
     <a [routerLink]="['/game-modes']" (click)="navMenuVisible =! navMenuVisible" routerLinkActive="active-link">Game modes</a>
 

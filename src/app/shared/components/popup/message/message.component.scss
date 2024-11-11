@@ -4,6 +4,7 @@
   right: 540px;
   font-weight: 700;
   font-size: 20px;
+  z-index: 1000;
   @include smaller(lg){
     right:360px;
   }

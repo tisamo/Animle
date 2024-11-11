@@ -37,5 +37,5 @@
   <ng-template #start>
       <h1 (click)="startGame()" *ngIf="gamePlayed == 0">{{gameActionText}}</h1>
   </ng-template>
-  <app-game-over-popup [result]="result" *ngIf="popupShown" (action)="handlePopupAction($event)"></app-game-over-popup>
+  <app-game-over-popup [actionText]="isQuiz ?'again' : 'random' " [result]="result" *ngIf="popupShown" (action)="handlePopupAction($event)"></app-game-over-popup>
 </div>

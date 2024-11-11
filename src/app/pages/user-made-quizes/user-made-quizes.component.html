@@ -1,13 +1,16 @@
 
 <div class="container">
   <section class="filter">
-    <a routerLink="create">Top Quizes</a>
+    <a (click)="pageChange(1, null, null, 'top')">Top Quizes</a>
 
-    <a routerLink="create">New Quizes</a>
+    <a (click)="pageChange(1, 'createdat-asc')">New Quizes</a>
 
-    <a routerLink="create">My Quizes</a>
+    <a (click)="pageChange(1, null, userId)" >My Quizes</a>
 
-    <a routerLink="create" class="green"> Create Quiz</a>
+
+      <a *ngIf="authService.isAuthenticated" routerLink="create" class="green"> Create Quiz</a>
+     <a *ngIf="!authService.isAuthenticated" routerLink="../auth/login" class="green">Login to Create quiz</a>
+
   </section>
   <section class="quizes">
     <div *ngFor="let q of quizList;" class="card">
@@ -23,8 +26,9 @@
             By <span class="green">{{q.user?.name}}</span>
           </div>
         </div>
-          <img class="like" *ngIf="!userLikes.includes(q.id)" (click)="likeQuiz(q.id)" src="assets/img/hearth-unfilled.png">
-          <img class="like" *ngIf="userLikes.includes(q.id)" (click)="likeQuiz(q.id)" src="assets/img/hearth-filled.png">
+        <img class="like" *ngIf="userId == q.user?.id" [routerLink]="[ 'edit', q.id]"  src="assets/img/edit.svg">
+        <img class="like" *ngIf="!userLikes.includes(q.id) && authService.isAuthenticated" (click)="likeQuiz(q.id)" src="assets/img/hearth-unfilled.png">
+        <img class="like" *ngIf="userLikes.includes(q.id)" (click)="likeQuiz(q.id)" src="assets/img/hearth-filled.png">
       </div>
 
     <div>
@@ -37,7 +41,7 @@
     </div>
 
   </section>
-  <app-pager [itemCount]="itemCount" [itemsPerPage]="25" (paging)="pageChange($event)"></app-pager>
+  <app-pager [itemCount]="itemCount" [itemsPerPage]="20" (paging)="pageChange($event)"></app-pager>
 
 </div>
 

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {AuthService} from "../../../shared/services/auth.service";
 import {LoginInfos, RegisterInfos} from "../../../shared/interfaces/auth";
 import {PopupService} from "../../../shared/services/popup.service";
@@ -18,7 +18,8 @@ interface LoginInput {
   imports: [
     ReactiveFormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    JsonPipe
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -42,6 +43,7 @@ export class LoginComponent {
 
   private setTemplateAccordingToRouter(mode: string) {
     this.mode = mode;
+
     this.authForm = new FormGroup({});
     switch (mode) {
       case 'login':
@@ -83,11 +85,13 @@ export class LoginComponent {
     this.router.navigate(route)
   }
 
-  public handleAuthActions(){
+  public async handleAuthActions(){
     if(!this.authForm.valid) return;
     switch (this.mode) {
       case 'login':
-        this.authService.login(this.authForm.value as LoginInfos).subscribe({
+        const auth = this.authForm.value as LoginInfos;
+        auth.fingerprint = await this.authService.getFingerPrint();
+        this.authService.login(auth).subscribe({
           next: (res=>{
             localStorage.setItem('jwt', res.token);
             this.authService.isAuthenticated = true;

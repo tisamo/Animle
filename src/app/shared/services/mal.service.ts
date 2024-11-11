@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {Anime, DailyGameResult} from "../interfaces/AnimeRespose";
 import {SimpleResponse} from "../interfaces/simple-response";
+import {GuessGameProgress} from "../interfaces/GuessGame";
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,12 @@ export class MyAnimeListService {
   constructor(private http: HttpClient) {
   }
 
-  getDailyAnime$(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}anime/daily`);
+  getDailyAnime$(fingerprint: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}anime/daily/${fingerprint}`);
   }
 
-  getDailyAnimeGuess(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}anime/emoji-quiz`);
+  getDailyAnimeGuess(fingerPrint: string): Observable<SimpleResponse> {
+    return this.http.get<SimpleResponse>(`${environment.apiUrl}anime/emoji-quiz/${fingerPrint}`);
   }
 
   setDailyAnimePoints$(gameResult: DailyGameResult, type: string): Observable<SimpleResponse> {
@@ -31,5 +32,10 @@ export class MyAnimeListService {
   }
   filterAnime$(name: string): Observable<Anime[]> {
     return this.http.get<Anime[]>(`${environment.apiUrl}anime/filter?q=${name}`)
+  }
+
+  saveGuessGameProgress(progress: GuessGameProgress) {
+    return this.http.post<GuessGameProgress[]>(`${environment.apiUrl}anime/guess/progress`, progress );
+
   }
 }

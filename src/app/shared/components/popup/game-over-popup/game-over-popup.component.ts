@@ -16,6 +16,7 @@ export class GameOverPopupComponent {
   @Output() action = new EventEmitter();
   @Input() winText: string = '';
   @Input() result: number  = 0;
+  @Input() actionText = "random";
 
   emitAction(eventTrigger: string){
     this.action.emit(eventTrigger);

@@ -6,6 +6,8 @@ import {PagerComponent} from "../../shared/components/elements/pager/pager.compo
 import {QuizService} from "../../shared/services/quiz.service";
 import {SimpleResponse} from "../../shared/interfaces/simple-response";
 import {UtilityServiceService} from "../../shared/services/utility-service.service";
+import {AuthService} from "../../shared/services/auth.service";
+import {GuardedElementComponent} from "../../shared/components/elements/guarded-element/guarded-element.component";
 
 @Component({
   selector: 'app-user-made-quizes',
@@ -15,7 +17,8 @@ import {UtilityServiceService} from "../../shared/services/utility-service.servi
     JsonPipe,
     NgForOf,
     PagerComponent,
-    NgIf
+    NgIf,
+    GuardedElementComponent
   ],
   templateUrl: './user-made-quizes.component.html',
   styleUrl: './user-made-quizes.component.scss'
@@ -25,17 +28,18 @@ export class UserMadeQuizesComponent {
   userLikes: number[] = [];
   itemCount = 0;
   limit = 25;
+  userId: number | null = null;
   constructor(private actr: ActivatedRoute,
               private router: Router,
+              public authService: AuthService,
               private utilityService: UtilityServiceService,
               private quizService: QuizService) {
     const snapshot = this.actr.snapshot.data['quizList'] as QuizList;
     this.quizList = snapshot.quizzes.list;
     this.itemCount = snapshot.quizzes.count;
     this.userLikes = snapshot.likedQuizzes;
-
+    this.userId = this.authService.userId;
     this.actr.queryParams.subscribe((params)=>{
-
       this.quizService.getQuizzes$(this.utilityService.createQueryString(params)).subscribe({
         next: (res) => {
           this.quizList = res.list;
@@ -62,9 +66,9 @@ export class UserMadeQuizesComponent {
     }));
   }
 
-  pageChange(page: number) {
+  pageChange(page: number, sort: null | string = null, user: number | null= null, top: string | null= null) {
     const queryParams: NavigationExtras = {
-      queryParams: { page: page, limit: 25 },
+      queryParams: { page: page, limit: 20, sort: sort, user: user, top: top},
       queryParamsHandling: 'merge',
       replaceUrl: true
     };

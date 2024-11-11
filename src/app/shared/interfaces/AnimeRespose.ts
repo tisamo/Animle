@@ -3,6 +3,7 @@ import {Words} from "./words.inteface";
 export interface Anime {
   id: number;
   type: string;
+  timesent?:string;
   title: string;
   japaneseTitle: string;
   description: string;
@@ -22,6 +23,7 @@ export interface DailyResponse{
 export interface DailyGameResult{
   gameGuid: string;
   result: number;
+  fingerprint: string;
 }
 
 export interface DailyGame{

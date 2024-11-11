@@ -22,11 +22,16 @@ export class HeaderComponent {
               private router: Router) {
     this.authService.isSignedIn().subscribe((res: SimpleResponse)=>{
       this.authService.isAuthenticated = true;
-      this.authService.userName = res.response;
+      const nameId = res.response.split('_');
+      this.authService.userName = nameId[0];
+      this.authService.userId = +nameId[1];
+
     })
   }
   logOut() {
     this.authService.isAuthenticated = false;
+    this.authService.userName = "";
+    this.authService.userId = null;
     this.navMenuVisible = false;
     localStorage.removeItem('jwt');
     this.router.navigate(['/']);

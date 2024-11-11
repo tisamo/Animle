@@ -19,20 +19,12 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) =>  {
       });
     }
   return next(req).pipe(
-    tap((event)=>{
-      if (event instanceof HttpResponse) {
-        const message = (event.body as any )?.Response;
-        if(message){
-          popupService.pushNewMessage(message, 3);
-        }
-        console.log(event);
-      }
-    }),
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
         localStorage.removeItem('jwt');
       }
       if(error.error.response){
+        console.log(error.error.response);
         popupService.pushNewMessage(error.error.response, 3);
       }
 

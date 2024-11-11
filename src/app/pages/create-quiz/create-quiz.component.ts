@@ -6,12 +6,18 @@ import {MyAnimeListService} from "../../shared/services/mal.service";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {PopupService} from "../../shared/services/popup.service";
 import {QuizService} from "../../shared/services/quiz.service";
-import {Router} from "@angular/router";
-
-interface Anime{
-  id: number;
+import {ActivatedRoute, Router} from "@angular/router";
+import {Anime} from "../../shared/interfaces/AnimeRespose";
+interface AnimeEditListItem{
+  id: string;
   title: string;
   thumbnail:string;
+}
+interface AnimeForEditing{
+  title: string;
+  animes: Anime[];
+  id: string;
+  thumbnail: string;
 }
 @Component({
   selector: 'app-create-quiz',
@@ -29,19 +35,39 @@ interface Anime{
 export class CreateQuizComponent implements OnDestroy{
   inputControl = new FormControl();
   titleName = '';
-  searchList: Anime[] = [];
-  selectedList: Anime[] = [];
+  searchList: AnimeEditListItem[] = [];
+  selectedList: AnimeEditListItem[] = [];
   selectedItemIndex = 0;
+  editMode = false;
   keyEventListener:any;
   selectedImageId = 0;
   constructor(private malService: MyAnimeListService,
               private quizService: QuizService,
+              private actr: ActivatedRoute,
               private router: Router,
               private renderer: Renderer2,
               private popupService: PopupService) {
     this.inputControl.valueChanges.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe(
       (filterString)=> this.filterItems(filterString ? filterString : ''))
-    this.listenToKeyEvents()
+    this.listenToKeyEvents();
+    if(this.actr.snapshot.data['data']){
+      this.editMode = true;
+      const animeForEditing: AnimeForEditing = this.actr.snapshot.data['data'] as AnimeForEditing;
+      this.titleName = animeForEditing.title;
+      const index =  animeForEditing.animes.findIndex((a)=> a.thumbnail == animeForEditing.thumbnail);
+      if(index > -1){
+        this.selectedImageId = index;
+      }
+
+      this.selectedList = animeForEditing.animes.map((m) => {
+        return {
+          thumbnail: m.thumbnail,
+          id: m.myanimeListId.toString(),
+          title: m.title.trim().length ? m.title : (m.japaneseTitle),
+        };
+      });
+
+    }
   }
   ngOnDestroy(): void {
     this.keyEventListener();
@@ -80,14 +106,14 @@ export class CreateQuizComponent implements OnDestroy{
         this.searchList = res.map((item)=>{
           return{
             title: item.title.trim().length ? item.title : item.japaneseTitle,
-            id: item.myanimeListId,
+            id: item.myanimeListId.toString(),
             thumbnail: item.thumbnail
           }
         })
       }
     );
   }
-  selectAnswer(a: Anime){
+  selectAnswer(a: AnimeEditListItem){
     if(this.selectedList.some((x)=> x.id == a.id)){
       this.popupService.pushNewMessage('Anime already in the list', 3);
       return;
@@ -100,13 +126,33 @@ export class CreateQuizComponent implements OnDestroy{
 
   removeFromList(index: number) {
    this.selectedList.splice(index,1);
+    const pos =  this.selectedList.findIndex((a)=> +a.id == this.selectedImageId );
+    if(pos > -1){
+      this.selectedImageId = pos;
+    } else{
+      if(this.selectedList.length){
+        this.selectedImageId = 0;
+      }
+    }
   }
 
   saveQuiz() {
-    const animeIds: number[] = this.selectedList.map((x)=> x.id);
-
+    const animeIds: number[] = this.selectedList.map((x)=> +x.id);
+    if(!this.selectedList.length || !this.titleName.length){
+      return;
+    }
+    if(this.editMode){
+      const id = +this.actr.snapshot.params['id'];
+      this.quizService.editQuiz$({id: id, title: this.titleName, animeIds, selectedImageId:
+          +this.selectedList[this.selectedImageId].id })
+        .subscribe((res)=>{
+          this.popupService.pushNewMessage('Quiz successfully created!',3)
+          this.router.navigate(['', 'quiz'])
+        });
+      return;
+    }
     this.quizService.createQuiz$({title: this.titleName, animeIds, selectedImageId:
-      this.selectedList[this.selectedImageId].id })
+      +this.selectedList[this.selectedImageId].id })
       .subscribe((res)=>{
         this.popupService.pushNewMessage('Quiz successfully created!',3)
         this.router.navigate(['', 'quiz'])

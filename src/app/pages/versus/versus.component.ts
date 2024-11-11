@@ -34,19 +34,16 @@ interface AnimeListItem {
   styleUrl: './versus.component.scss',
   providers: [SignalrService]
 })
-export class VersusComponent implements OnInit, OnDestroy, AfterViewInit {
+export class VersusComponent implements OnInit, OnDestroy {
   protected readonly GameType = GameType;
   @ViewChild('input') elementRef: ElementRef | null = null;
   searchList: AnimeListItem[] = [];
   inputControl = new FormControl<string>('', []);
   gameStarted = false;
-  gameEnded = false;
   time = 0;
-  interval: any;
   words: Words[] = []
-  quiz: AnimeGame[] = [];
+  quiz: AnimeGame | null = null;
   result = 0;
-  selectedQuiz = 0;
   selectedItemIndex = 0;
   keyEventListener: any;
   beforeUnloadListener: any;
@@ -58,7 +55,9 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit {
     this.signalR.initConnectionAndListeners(this.mapAnimes);
     this.listenToKeyEvents();
     this.subscribeToGameEvents();
-
+    this.signalR.dataSubject.subscribe((time: number) => {
+      this.time = time;
+    });
   }
 
   async ngOnInit(): Promise<void> {
@@ -66,11 +65,10 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit {
     await this.signalR.registerPlayer();
     await this.signalR.findOpponent();
   }
-  mapAnimes(animes?: Anime[]) {
-    if (!animes) {
+  mapAnimes(a?: Anime) {
+    if (!a) {
       return;
     }
-    return animes.map((a: Anime): AnimeGame => {
       return {
         id: a.id,
         title: a.title,
@@ -82,30 +80,20 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit {
         }) : [],
         emojiDescription: a.emojiDescription,
         thumbnail: a?.thumbnail,
+        timeSent: a.timesent,
         image: a.image,
         type: a.type,
         myanimeListId: a.myanimeListId,
         properties: JSON.parse(a.properties)
       };
-    });
   }
 
   async ngOnDestroy(): Promise<void> {
     await this.signalR.disconnect();
-
-    if (this.interval) {
-      this.interval.unsubscribe();
-    }
     this.beforeUnloadListener();
     this.keyEventListener();
   }
 
-  ngAfterViewInit() {
-    this.signalR.dataSubject.subscribe((data) => {
-      this.quiz = data as AnimeGame[];
-      this.startGame();
-    });
-  }
 
   listenToKeyEvents() {
     this.keyEventListener = this.renderer.listen(window, 'keydown', event => {
@@ -134,32 +122,31 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit {
   subscribeToGameEvents() {
     this.signalR.nextSubject.pipe(takeUntilDestroyed()).subscribe(async (message) => {
       if (message == 'opd') {
-        this.quiz = [];
+        this.quiz = null;
         this.time = 0;
         alert("opponent disconnected");
-        this.interval.unsubscribe();
       } else {
         this.inputControl.setValue('');
+        if(this.selectedItemIndex == 0){
+          this.startGame();
+        }
+        this.quiz = this.mapAnimes(message) as AnimeGame;
         await this.handleQuizChange();
       }
 
     });
     this.signalR.endGameResult.pipe(takeUntilDestroyed()).subscribe((data) => {
-
+      this.gameStarted = true;
+      this.searchList = [];
     })
     this.inputControl.valueChanges.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe(
       (filterString) => this.filterItems(filterString ? filterString : ''))
   }
 
-  startGame() {
+  async startGame() {
     this.elementRef?.nativeElement.focus();
-    this.gameStarted = true;
-    this.interval = interval(1000).subscribe(async () => {
-      if (this.time === 20) {
-        await this.handleQuizChange();
-      }
-      this.time += 1;
-    });
+    this.gameStarted = false;
+    await this.signalR.findOpponent();
   }
 
   filterItems(filterString: string) {
@@ -180,26 +167,19 @@ export class VersusComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async selectAnswer(id: number) {
-    if (this.quiz[this.selectedQuiz].myanimeListId == id) {
+    if(!this.quiz) return;
+    if (this.quiz.myanimeListId == id) {
       this.result += (100 + this.time * 5);
-      await this.signalR.next();
+      await this.signalR.next(this.result);
       return;
     }
     this.popupService.pushNewMessage('Incorrect Answer', 3)
   }
 
   async handleQuizChange() {
-    if (this.selectedQuiz == this.quiz.length - 1) {
-      this.time = 0;
-      this.selectedQuiz = 0;
       this.gameStarted = false;
       this.inputControl.setValue('');
-      this.interval.unsubscribe();
-      await this.signalR.endGame(this.result);
       return;
     }
-    this.time = 0;
-    this.selectedQuiz++;
-  }
 
 }

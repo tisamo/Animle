@@ -5,6 +5,7 @@ import List = types.List;
 import {ListData} from "./list.interface";
 
 export interface QuizCreation{
+  id?: number;
   title: string;
   animeIds: number[];
   selectedImageId: number;

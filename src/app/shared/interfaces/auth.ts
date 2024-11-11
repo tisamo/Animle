@@ -1,6 +1,7 @@
 export type LoginInfos = {
   name: string;
   password: string;
+  fingerprint: string;
 };
 
 export type RegisterInfos = {
@@ -10,6 +11,7 @@ export type RegisterInfos = {
 };
 
 export type User = {
+  id?: number;
   name?: string;
   email?: string;
 };
