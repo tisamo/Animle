@@ -70,7 +70,6 @@ export class EmojiComponent implements OnDestroy {
               private router: Router,
               private actr: ActivatedRoute) {
     this.getDataFromSnapshot();
-
     this.listenToKeyEvents();
     this.beforeUnloadListener = this.renderer.listen(window, 'onbeforeunload', this.handleBeforeUnload);
     this.inputControl.valueChanges.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe(
@@ -83,6 +82,10 @@ export class EmojiComponent implements OnDestroy {
     }
     this.beforeUnloadListener();
     this.keyEventListener();
+    await  this.saveGameOnQuit();
+  }
+
+  async saveGameOnQuit(){
     if(!this.gameEnded && this.gameStarted){
       if(this.quizType =='daily'){
         const dailyResult: DailyGameResult = {result: this.result, gameGuid: this.gameGuid, fingerprint: await this.authService.getFingerPrint()}

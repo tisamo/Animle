@@ -26,8 +26,7 @@ export class PagerComponent implements OnInit{
       this.pages.push(i);
     }
   }
-  pageChange(selectedPage: number)
-  {
+  pageChange(selectedPage: number) {
     this.selectedPage = selectedPage;
     this.paging.emit(this.selectedPage);
   }

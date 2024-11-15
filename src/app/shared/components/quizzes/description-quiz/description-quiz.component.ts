@@ -27,9 +27,7 @@ export class DescriptionQuizComponent implements OnChanges, OnInit {
   randomIndex = 0;
   randomIndex2 = 0;
   @Input() time = 0;
-  stopped = false;
   stop = 0;
-  usedNumbers: number[] = [];
 
   ngOnInit(): void {
   this.initGame();
@@ -45,7 +43,7 @@ export class DescriptionQuizComponent implements OnChanges, OnInit {
         }
       })
       this.initGame();
-      this.showWordAtIndex();
+      this.graduallyShowWords();
       return;
     }
     if(this.showIndex === this.stop){
@@ -58,7 +56,7 @@ export class DescriptionQuizComponent implements OnChanges, OnInit {
 
       return;
     }
-    this.showWordAtIndex();
+    this.graduallyShowWords();
   }
    initGame(){
      this.showIndex = 0;
@@ -67,7 +65,7 @@ export class DescriptionQuizComponent implements OnChanges, OnInit {
      this.showIndex2 = Math.round((this.words.length - 1) / 2);
      this.stop = Math.round((this.words.length -1) /4);
    }
-   showWordAtIndex(){
+   graduallyShowWords(){
      this.randomIndex = Math.floor(Math.random() * (this.words.length -1));
      this.randomIndex2 = Math.floor(Math.random() * (this.words.length -2));
      this.words[this.showIndex].shown = true;

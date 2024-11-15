@@ -16,7 +16,6 @@ import {PopupService} from "../../shared/services/popup.service";
 })
 export class ContactComponent {
   contactForm: FormGroup;
-
   constructor(private emailService: EmailService,
               private popupService: PopupService) {
     this.contactForm = new FormGroup({

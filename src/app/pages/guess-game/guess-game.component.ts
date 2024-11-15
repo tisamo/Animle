@@ -27,20 +27,20 @@ import {AuthService} from "../../shared/services/auth.service";
   templateUrl: './guess-game.component.html',
   styleUrl: './guess-game.component.scss'
 })
-export class GuessGameComponent implements OnDestroy{
+export class GuessGameComponent implements OnDestroy {
   // @ts-ignore
   @ViewChild('input') elementRef: ElementRef;
   searchList: AnimeListItem[] = [];
   inputControl = new FormControl<string>('', []);
   result = 0;
-  animeToGuess: GuessGame;
+  animeToGuess!: GuessGame;
   clue: string[] = [];
   solution: string[] = [];
-
   attempts = 0;
   selectedItemIndex = 0;
   keyEventListener: any;
   popupShown = false;
+
   constructor(private malService: MyAnimeListService,
               private renderer: Renderer2,
               private animeService: MyAnimeListService,
@@ -51,11 +51,15 @@ export class GuessGameComponent implements OnDestroy{
     this.listenToKeyEvents();
     this.inputControl.valueChanges.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe(
       (filterString) => this.filterItems(filterString ? filterString : ''))
-   this.animeToGuess = this.actr.snapshot.data['data'] as GuessGame;
-   this.solution = this.splitEmoji(this.animeToGuess.EmojiDescription);
-   this.attempts = this.animeToGuess.Attempts;
-    this.clue = this.solution.slice(0,2 + this.attempts);
+    this.loadGuess();
 
+  }
+
+  loadGuess() {
+    this.animeToGuess = this.actr.snapshot.data['data'] as GuessGame;
+    this.solution = this.splitEmoji(this.animeToGuess.EmojiDescription);
+    this.attempts = this.animeToGuess.Attempts;
+    this.clue = this.solution.slice(0, 2 + this.attempts);
   }
 
   ngOnDestroy(): void {
@@ -67,7 +71,7 @@ export class GuessGameComponent implements OnDestroy{
       if (!this.searchList.length) return;
       if (event.key == 'ArrowDown') {
         event.preventDefault();
-        if (this.selectedItemIndex === this.searchList.length ) {
+        if (this.selectedItemIndex === this.searchList.length) {
           this.selectedItemIndex = 0;
           return;
         }
@@ -103,7 +107,7 @@ export class GuessGameComponent implements OnDestroy{
 
   selectAnswer(id: number) {
     this.attempts++;
-    if (this.animeToGuess.AnimeId == id) {
+    if (this.animeToGuess?.AnimeId == id) {
       this.popupService.pushNewMessage('You Won!', 3);
       const score = 1000 - (this.attempts - 1) * 200;
       this.saveUsersProgress(score);
@@ -111,11 +115,11 @@ export class GuessGameComponent implements OnDestroy{
     }
     this.popupService.pushNewMessage('Incorrect Answer', 3);
     this.saveUsersProgress(0);
-    if(this.attempts == 5){
+    if (this.attempts == 5) {
       this.inputControl.setValue('');
     }
 
-    this.clue = this.solution.slice(0, 2+ this.attempts);
+    this.clue = this.solution.slice(0, 2 + this.attempts);
 
   }
 
@@ -123,15 +127,19 @@ export class GuessGameComponent implements OnDestroy{
     return [...new Intl.Segmenter().segment(emojiToSplit)].map(x => x.segment)
   }
 
-  saveUsersProgress(result: number){
-    const progress: GuessGameProgress = {guessGameId: this.animeToGuess.Id, attempts: this.attempts, result: result, fingerprint: this.auth.fingerPrintOfDevice};
-    this.animeService.saveGuessGameProgress(progress).subscribe((res)=>{
+  saveUsersProgress(result: number) {
+    const progress: GuessGameProgress = {
+      guessGameId: this.animeToGuess.Id,
+      attempts: this.attempts,
+      result: result,
+      fingerprint: this.auth.fingerPrintOfDevice
+    };
+    this.animeService.saveGuessGameProgress(progress).subscribe((res) => {
       console.log(res);
-    }, err=>{
+    }, err => {
       console.log(err);
     });
   }
-
 
 
   handlePopupAction(event: string) {

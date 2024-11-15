@@ -24,6 +24,11 @@ export class LeaderBoardComponent implements OnInit{
               private actr: ActivatedRoute) {
   }
   ngOnInit(): void {
+    this.handleInitialQueryParams();
+    this.subscribeToQueryParamsChange();
+  }
+
+  handleInitialQueryParams(){
     const params = this.actr.snapshot.queryParams;
     if(!Object.keys(params).length){
       const queryParams: NavigationExtras = {
@@ -34,8 +39,11 @@ export class LeaderBoardComponent implements OnInit{
       this.router.navigate([], queryParams);
 
     }
+  }
+
+  subscribeToQueryParamsChange(){
     this.actr.queryParams.subscribe((res)=>{
-    const type = (res as LeaderParams).type;
+      const type = (res as LeaderParams).type;
       this.userService.getLeaderBoard(type).subscribe((leaderBoard)=>{
         this.leaderBoard = leaderBoard;
       })

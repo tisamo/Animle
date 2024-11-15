@@ -34,11 +34,19 @@ export class UserMadeQuizesComponent {
               public authService: AuthService,
               private utilityService: UtilityServiceService,
               private quizService: QuizService) {
+          this.loadInitialQuizzes();
+          this.listenToQueryParamChange();
+  }
+
+  loadInitialQuizzes(){
     const snapshot = this.actr.snapshot.data['quizList'] as QuizList;
     this.quizList = snapshot.quizzes.list;
     this.itemCount = snapshot.quizzes.count;
     this.userLikes = snapshot.likedQuizzes;
     this.userId = this.authService.userId;
+  }
+
+  listenToQueryParamChange(){
     this.actr.queryParams.subscribe((params)=>{
       this.quizService.getQuizzes$(this.utilityService.createQueryString(params)).subscribe({
         next: (res) => {

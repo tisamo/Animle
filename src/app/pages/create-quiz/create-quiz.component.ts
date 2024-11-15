@@ -50,6 +50,14 @@ export class CreateQuizComponent implements OnDestroy{
     this.inputControl.valueChanges.pipe(takeUntilDestroyed(), debounceTime(200), distinctUntilChanged()).subscribe(
       (filterString)=> this.filterItems(filterString ? filterString : ''))
     this.listenToKeyEvents();
+    this.initQuizForEditing();
+  }
+
+  ngOnDestroy(): void {
+    this.keyEventListener();
+  }
+
+  initQuizForEditing(){
     if(this.actr.snapshot.data['data']){
       this.editMode = true;
       const animeForEditing: AnimeForEditing = this.actr.snapshot.data['data'] as AnimeForEditing;
@@ -58,7 +66,6 @@ export class CreateQuizComponent implements OnDestroy{
       if(index > -1){
         this.selectedImageId = index;
       }
-
       this.selectedList = animeForEditing.animes.map((m) => {
         return {
           thumbnail: m.thumbnail,
@@ -68,9 +75,6 @@ export class CreateQuizComponent implements OnDestroy{
       });
 
     }
-  }
-  ngOnDestroy(): void {
-    this.keyEventListener();
   }
   listenToKeyEvents(){
     this.keyEventListener = this.renderer.listen(window, 'keydown', event => {
